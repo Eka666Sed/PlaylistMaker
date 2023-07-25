@@ -4,15 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_3772E7"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarMain"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/main_toolbar_title"
+        app:titleTextColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="@dimen/margin_top_toolbar"
+        android:layout_marginBottom="28dp"
+        android:divider="@drawable/divider"
+        android:orientation="vertical"
+        android:showDividers="middle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbarMain">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSearch"
+            style="@style/App.Button.Main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/search"
+            app:icon="@drawable/ic_search" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonMedia"
+            style="@style/App.Button.Main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/media"
+            app:icon="@drawable/ic_media" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSettings"
+            style="@style/App.Button.Main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/settings"
+            app:icon="@drawable/ic_settings" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
