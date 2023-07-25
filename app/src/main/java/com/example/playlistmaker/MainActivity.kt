@@ -3,8 +3,8 @@ package com.example.playlistmaker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
@@ -24,30 +24,25 @@ class MainActivity : AppCompatActivity() {
         setUpButtonMedia()
         setUpButtonSettings()
     }
+
     private fun setUpButtonSearch() {
-        buttonSearch.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                showToast(buttonSearch.text.toString())
-            }
-        })
-        buttonSearch.setOnClickListener { showToast(buttonSearch.text.toString()) }
+        buttonSearch.setOnClickListener {
+            val intent = Intent(this@MainActivity, SearchActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setUpButtonMedia() {
-        buttonMedia.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                showToast(buttonMedia.text.toString())
-            }
-        })
-        buttonMedia.setOnClickListener { showToast(buttonMedia.text.toString()) }
+        buttonMedia.setOnClickListener {
+            val intent = Intent(this, MediaActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setUpButtonSettings() {
-        buttonSettings.setOnClickListener { showToast(buttonSettings.text.toString()) }
+        buttonSettings.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
     }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
 }
