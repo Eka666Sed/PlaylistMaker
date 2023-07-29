@@ -14,11 +14,6 @@ class SettingsActivity : AppCompatActivity() {
         setUpToolbar()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-    }
-
     private fun setUpToolbar() {
         toolbar = findViewById(R.id.toolbarSettings)
         toolbar.setNavigationOnClickListener { onBackPressed() }
