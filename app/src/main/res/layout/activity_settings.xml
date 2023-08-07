@@ -11,7 +11,7 @@
         android:layout_height="?attr/actionBarSize"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="@string/settings"
-        app:titleTextColor="@color/black2" />
+        app:titleTextColor="@color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,23 +26,24 @@
             android:layout_height="61dp"
             android:paddingEnd="6dp"
             android:text="@string/dark_theme"
+            android:fontFamily="@font/ys_display_medium"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/textShareApp"
-            style="@style/App.Text.Settings.Item"
+        <Button
+            android:id="@+id/buttonShareApp"
             android:text="@string/share_app"
+            style="@style/App.Button.Setting"
             app:drawableEndCompat="@drawable/ic_share" />
 
-        <TextView
-            android:id="@+id/textWriteSupport"
-            style="@style/App.Text.Settings.Item"
+        <Button
+            android:id="@+id/buttonWriteSupport"
+            style="@style/App.Button.Setting"
             android:text="@string/write_support"
             app:drawableEndCompat="@drawable/ic_support" />
 
-        <TextView
-            android:id="@+id/textUserAgreement"
-            style="@style/App.Text.Settings.Item"
+        <Button
+            android:id="@+id/buttonUserAgreement"
+            style="@style/App.Button.Setting"
             android:text="@string/user_agreement"
             app:drawableEndCompat="@drawable/ic_arrow_right" />
 
