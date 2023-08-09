@@ -24,15 +24,15 @@
             android:id="@+id/switchTheme"
             android:layout_width="match_parent"
             android:layout_height="61dp"
+            android:fontFamily="@font/ys_display_medium"
             android:paddingEnd="6dp"
             android:text="@string/dark_theme"
-            android:fontFamily="@font/ys_display_medium"
             android:textSize="16sp" />
 
         <Button
             android:id="@+id/buttonShareApp"
-            android:text="@string/share_app"
             style="@style/App.Button.Setting"
+            android:text="@string/share_app"
             app:drawableEndCompat="@drawable/ic_share" />
 
         <Button

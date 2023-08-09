@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="App.Button.Main" parent="ThemeOverlay.Material3.Button.TextButton">
+    <style name="App.Button.Main" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_weight">1</item>
         <item name="android:shadowColor">@android:color/transparent</item>
         <item name="textAllCaps">false</item>
@@ -29,7 +29,7 @@
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
 
-    <style name="App.Button.Setting" parent="ThemeOverlay.Material3.Button.TextButton">
+    <style name="App.Button.Setting" parent="Widget.AppCompat.Button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">64dp</item>
         <item name="android:gravity">left|center_vertical</item>
