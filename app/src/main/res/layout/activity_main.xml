@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/blue"
+    android:background="@color/color_LinearLayoutMain"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -34,7 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/search"
-            app:icon="@drawable/ic_search" />
+            app:icon="@drawable/ic_search"
+            tools:ignore="VisualLintButtonSize" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonMedia"
@@ -42,7 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/media"
-            app:icon="@drawable/ic_media" />
+            app:icon="@drawable/ic_media"
+            tools:ignore="VisualLintButtonSize" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonSettings"
@@ -50,7 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/settings"
-            app:icon="@drawable/ic_settings" />
+            app:icon="@drawable/ic_settings"
+            tools:ignore="VisualLintButtonSize" />
     </LinearLayout>
 
 </LinearLayout>
