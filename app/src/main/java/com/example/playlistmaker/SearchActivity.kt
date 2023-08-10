@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.doOnTextChanged
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var toolbarSettings: Toolbar
@@ -62,7 +63,9 @@ class SearchActivity : AppCompatActivity() {
             }
             override fun afterTextChanged(s: Editable?) {}
         }
-        search.addTextChangedListener(myTextWatcher)
+        search.doOnTextChanged { text, _, _, _ ->
+            myTextWatcher.onTextChanged(text, 0, 0, 0)
+        }
         button.setOnClickListener{
             search.text.clear()
             hideKeyboard()

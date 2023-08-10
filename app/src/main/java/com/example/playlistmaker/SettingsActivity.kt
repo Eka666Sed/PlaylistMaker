@@ -59,13 +59,13 @@ class SettingsActivity : AppCompatActivity() {
     private fun openEmailApp() {
         val message = getString(R.string.email_message)
         val theme = getString(R.string.email_theme)
-        val shareIntent = Intent(Intent.ACTION_SENDTO).apply {
+        Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse(getString(R.string.url_mail))
             putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.my_email)))
             putExtra(Intent.EXTRA_SUBJECT, theme)
             putExtra(Intent.EXTRA_TEXT, message)
+            startActivity(this)
         }
-        startActivity(shareIntent)
     }
 
     private fun parseWeb() {
