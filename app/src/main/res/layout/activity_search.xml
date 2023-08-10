@@ -22,19 +22,20 @@
 
         <EditText
             android:id="@+id/search"
-            android:layout_width="328dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/ic_search_icon_search"
-            android:drawableTint="@color/colorInput"
             android:drawablePadding="8dp"
+            android:drawableTint="@color/colorInput"
             android:ems="10"
             android:hint="@string/search"
-            android:textColorHint="@color/colorHint"
             android:inputType="text"
             android:maxLines="1"
             android:minHeight="48dp"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/colorHint" />
 
         <ImageButton
             android:id="@+id/clear_button"

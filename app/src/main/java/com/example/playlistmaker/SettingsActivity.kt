@@ -38,8 +38,6 @@ class SettingsActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
-
-
     private fun shareText(text: String, activity: Activity) {
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -54,10 +52,8 @@ class SettingsActivity : AppCompatActivity() {
         if (isChecked) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             shareButton.setBackgroundColor(Color.BLACK)
-            restartActivity()
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            restartActivity()
         }
     }
     private fun openEmailApp() {
@@ -70,18 +66,13 @@ class SettingsActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_TEXT, message)
         }
         startActivity(shareIntent)
-
-        if (shareIntent.resolveActivity(packageManager) != null) {
-            startActivity(shareIntent)
-        } else { }
     }
+
     private fun parseWeb() {
         val url = getString(R.string.web_url)
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(intent)
     }
-
-
 
     private fun onClickListenerButton(){
         shareButton.setOnClickListener {
@@ -96,10 +87,5 @@ class SettingsActivity : AppCompatActivity() {
         themeSwitch.setOnCheckedChangeListener { _, isChecked ->
             toggleTheme(isChecked)
         }
-    }
-    private fun restartActivity() {
-        val intent = Intent(this, SettingsActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 }

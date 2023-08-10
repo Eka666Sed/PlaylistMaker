@@ -16,6 +16,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var search: EditText
     private lateinit var button: ImageButton
     private var savedText: String = ""
+    companion object {
+        const val search_text = "search_text"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +30,7 @@ class SearchActivity : AppCompatActivity() {
         toolbarSettings.setNavigationOnClickListener { onBackPressed() }
 
         if (savedInstanceState != null) {
-            savedText = savedInstanceState.getString(getString(R.string.key_state), "")
+            savedText = savedInstanceState.getString((search_text), "")
             search.setText(savedText)
         }
         textWatcher()
@@ -36,16 +39,16 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         savedText = search.text.toString()
-        outState.putString(getString(R.string.key_state), savedText)
+        outState.putString((search_text), savedText)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        savedText = savedInstanceState.getString(getString(R.string.key_state), "")
+        savedText = savedInstanceState.getString((search_text), "")
         search.setText(savedText)
     }
 
-    fun textWatcher(){
+    private fun textWatcher(){
         val myTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 button.visibility = View.INVISIBLE
