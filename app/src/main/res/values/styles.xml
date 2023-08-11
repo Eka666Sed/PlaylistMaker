@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="App.Button.Main" parent="ThemeOverlay.Material3.Button.TextButton">
+    <style name="App.Button.Main" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_weight">1</item>
         <item name="android:shadowColor">@android:color/transparent</item>
         <item name="textAllCaps">false</item>
-        <item name="android:textColor">@color/black2</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">22sp</item>
         <item name="iconTintMode">multiply</item>
         <item name="backgroundTint">@color/white</item>
@@ -15,6 +15,8 @@
         <item name="android:insetRight">0dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
 
     <style name="App.Text.Settings.Item" parent="Widget.AppCompat.TextView">
@@ -24,5 +26,20 @@
         <item name="android:paddingEnd">12dp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
+
+    <style name="App.Button.Setting" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/textButtonSetting</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingLeft">0dp</item>
+    </style>
+
 </resources>

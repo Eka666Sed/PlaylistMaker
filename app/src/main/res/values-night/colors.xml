@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_LinearLayoutMain">#FF000000</color>
+    <color name="textButtonSetting">#FFFFFFFF</color>
+    <color name="colorTextToolbarSetting">#FFFFFFFF</color>
+    <color name="colorTextToolbarSearch">#FFFFFFFF</color>
+    <color name="colorInput">#FF000000</color>
+    <color name="colorHint">#FF000000</color>
+    <color name="colorStartSearch">#FFFFFFFF</color>
+    <color name="colorIconStartSearch">#FF000000</color>
+</resources>
