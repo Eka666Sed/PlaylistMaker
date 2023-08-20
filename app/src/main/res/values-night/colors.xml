@@ -8,4 +8,8 @@
     <color name="colorHint">#FF000000</color>
     <color name="colorStartSearch">#FFFFFFFF</color>
     <color name="colorIconStartSearch">#FF000000</color>
+    <color name="colorText">#FFFFFFFF</color>
+    <color name="colorTextMedium">#FFFFFFFF</color>
+    <color name="colorArrowRight">#FFFFFFFF</color>
+    <color name="colorClear">#FF000000</color>
 </resources>

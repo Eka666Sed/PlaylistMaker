@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -17,6 +18,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var shareButton: Button
     private lateinit var buttonWriteSupport: Button
     private lateinit var buttonUserAgreement: Button
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private lateinit var themeSwitch: Switch
 
 

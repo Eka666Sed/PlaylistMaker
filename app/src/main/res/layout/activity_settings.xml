@@ -30,7 +30,7 @@
             android:paddingEnd="6dp"
             android:text="@string/dark_theme"
             android:textSize="16sp"
-            tools:ignore="RtlSymmetry,VisualLintButtonSize" />
+            tools:ignore="RtlSymmetry,UseSwitchCompatOrMaterialXml,VisualLintButtonSize" />
 
         <Button
             android:id="@+id/buttonShareApp"
