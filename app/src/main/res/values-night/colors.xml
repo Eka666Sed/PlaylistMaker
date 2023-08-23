@@ -12,4 +12,6 @@
     <color name="colorTextMedium">#FFFFFFFF</color>
     <color name="colorArrowRight">#FFFFFFFF</color>
     <color name="colorClear">#FF000000</color>
+    <color name="colorSwitch">#3772E7</color>
+    <color name="colorSwitchBackground">#9FBBF3</color>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.playlistmaker
 
+import android.content.Context
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,20 +14,21 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 
-class TrackAdapter(private val listTrack: List<Track>) :
+class TrackAdapter(private val listTrack: List<Track>,private val context: Context) :
     RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
    inner class TrackViewHolder(track: View) : RecyclerView.ViewHolder(track) {
-       private val artistName: TextView = itemView.findViewById(R.id.artistName)
-       private val trackName: TextView = itemView.findViewById(R.id.trackName)
-       private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
+       private val artistName: TextView = itemView.findViewById(R.id.tvArtistName)
+       private val trackName: TextView = itemView.findViewById(R.id.tvTrackName)
+       private val trackTime: TextView = itemView.findViewById(R.id.tvTrackTime)
        private val artworkUrl100: ImageView = itemView.findViewById(R.id.artworkUrl100)
 
         fun bind(track: Track) {
             val requestOptions =
                 RequestOptions()
-                    .placeholder(R.drawable.ic_search)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL
+                    .placeholder(R.drawable.placeholder)
+                    .diskCacheStrategy(
+                        DiskCacheStrategy.ALL
                     )
 
             artistName.text = track.artistName
@@ -34,9 +37,14 @@ class TrackAdapter(private val listTrack: List<Track>) :
             Glide.with(itemView)
                 .applyDefaultRequestOptions(requestOptions)
                 .load(track.artworkUrl100)
-                .transform(CenterCrop(), RoundedCorners(2))
+                .transform(CenterCrop(), RoundedCorners(dpToPx(radiusCorners,context)))
                 .into(artworkUrl100)
         }
+       fun dpToPx(dp: Float, context: Context): Int {
+           return TypedValue.applyDimension(
+               TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics
+           ).toInt()
+       }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
@@ -50,5 +58,8 @@ class TrackAdapter(private val listTrack: List<Track>) :
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val item = listTrack[position]
         holder.bind(item)
+    }
+    companion object{
+        val radiusCorners = 2.0f
     }
 }

@@ -15,4 +15,6 @@
     <color name="colorTextMedium">#AEAFB4</color>
     <color name="colorArrowRight">#AEAFB4</color>
     <color name="colorClear">#AEAFB4</color>
+    <color name="colorSwitch">#AEAFB4</color>
+    <color name="colorSwitchBackground">#E6E8EB</color>
 </resources>

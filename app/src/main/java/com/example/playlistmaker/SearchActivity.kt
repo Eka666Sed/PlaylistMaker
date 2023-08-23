@@ -27,7 +27,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        search = findViewById(R.id.search)
+        search = findViewById(R.id.editTextSearch)
         button = findViewById(R.id.clear_button)
         toolbarSettings = findViewById(R.id.toolbarSettings)
         button.visibility = View.INVISIBLE
@@ -86,7 +86,7 @@ class SearchActivity : AppCompatActivity() {
     private fun getRecyclerView(){
         val recyclerView: RecyclerView = findViewById(R.id.track_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = TrackAdapter(addDataRecyclerView())
+        recyclerView.adapter = TrackAdapter(addDataRecyclerView(),this)
     }
     private fun addDataRecyclerView() : List<Track>{
         val listDataRV = ArrayList<Track>()
