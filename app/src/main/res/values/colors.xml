@@ -11,4 +11,10 @@
     <color name="colorHint">#AAAAAA</color>
     <color name="colorStartSearch">#E6E8EB</color>
     <color name="colorIconStartSearch">#AEAFB4</color>
+    <color name="colorText">#FF000000</color>
+    <color name="colorTextMedium">#AEAFB4</color>
+    <color name="colorArrowRight">#AEAFB4</color>
+    <color name="colorClear">#AEAFB4</color>
+    <color name="colorSwitch">#AEAFB4</color>
+    <color name="colorSwitchBackground">#E6E8EB</color>
 </resources>

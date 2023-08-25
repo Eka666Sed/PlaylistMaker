@@ -24,9 +24,19 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:gravity">center|start</item>
         <item name="android:paddingEnd">12dp</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/colorText</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="App.Text.Search.Item" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_height">13dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/colorTextMedium</item>
+        <item name="android:ellipsize">end</item>
+        <item name="maxLines">1</item>
     </style>
 
     <style name="App.Button.Setting" parent="Widget.AppCompat.Button">
