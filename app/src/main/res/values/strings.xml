@@ -16,7 +16,6 @@
     <string name="web_url">https://yandex.ru/legal/practicum_offer/</string>
     <string name="web_document">https://practicum.yandex.ru/android-developer/</string>
     <string name="no_web">Проблемы со связью
-
         Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="no_content">Ничего не нашлось</string>
     <string name="update">Обновить</string>
