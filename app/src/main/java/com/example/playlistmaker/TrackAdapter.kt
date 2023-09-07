@@ -14,8 +14,11 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 
-class TrackAdapter(private val listTrack: List<Track>,private val context: Context) :
+
+class TrackAdapter(private val context: Context) :
     RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+
+    private var listTrack: List<Track> = emptyList()
 
    inner class TrackViewHolder(track: View) : RecyclerView.ViewHolder(track) {
        private val artistName: TextView = itemView.findViewById(R.id.tvArtistName)
@@ -24,23 +27,20 @@ class TrackAdapter(private val listTrack: List<Track>,private val context: Conte
        private val artworkUrl100: ImageView = itemView.findViewById(R.id.artworkUrl100)
 
         fun bind(track: Track) {
-            val requestOptions =
-                RequestOptions()
+            val requestOptions = RequestOptions()
                     .placeholder(R.drawable.placeholder)
-                    .diskCacheStrategy(
-                        DiskCacheStrategy.ALL
-                    )
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
 
             artistName.text = track.artistName
             trackName.text = track.trackName
-            trackTime.text = track.trackTime
+            trackTime.text = track.getFormattedTrackTime()
             Glide.with(itemView)
                 .applyDefaultRequestOptions(requestOptions)
                 .load(track.artworkUrl100)
                 .transform(CenterCrop(), RoundedCorners(dpToPx(radiusCorners,context)))
                 .into(artworkUrl100)
         }
-       fun dpToPx(dp: Float, context: Context): Int {
+       private fun dpToPx(dp: Float, context: Context): Int {
            return TypedValue.applyDimension(
                TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics
            ).toInt()
@@ -48,8 +48,8 @@ class TrackAdapter(private val listTrack: List<Track>,private val context: Conte
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_track_list, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_track_list, parent, false)
         return TrackViewHolder(view)
     }
 
@@ -59,7 +59,17 @@ class TrackAdapter(private val listTrack: List<Track>,private val context: Conte
         val item = listTrack[position]
         holder.bind(item)
     }
-    companion object{
+
+     fun updateData(newListTrack: List<Track>) {
+        listTrack = newListTrack
+        notifyDataSetChanged()
+    }
+     fun clearListAdapter(){
+        listTrack = emptyList()
+        notifyDataSetChanged()
+    }
+
+     companion object{
         val radiusCorners = 2.0f
     }
 }
