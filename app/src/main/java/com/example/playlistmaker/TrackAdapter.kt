@@ -10,7 +10,7 @@ class TrackAdapter(private val context: Context) :
     RecyclerView.Adapter<TrackViewHolder>() {
 
     private var listTrack: List<Track> = emptyList()
-
+    private var listTrack: List<Track> = emptyList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_track_list, parent, false)
