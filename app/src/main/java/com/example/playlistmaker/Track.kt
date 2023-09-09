@@ -1,8 +1,16 @@
 package com.example.playlistmaker
 
+import com.google.gson.annotations.SerializedName
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 data class Track(
-    val trackName:String,
-    val artistName:String,
-    val trackTime:String,
-    val artworkUrl100:String
-)
+    @SerializedName("trackName") val trackName:String,
+    @SerializedName("artistName") val artistName:String,
+    @SerializedName("trackTimeMillis") val trackTimeMillis:Long,
+    @SerializedName("artworkUrl100") val artworkUrl100:String
+){
+     fun getFormattedTrackTime(): String {
+        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
+    }
+}

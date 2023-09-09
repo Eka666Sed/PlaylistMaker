@@ -15,5 +15,10 @@
     <string name="my_email">mrs_sedova@mail.ru</string>
     <string name="web_url">https://yandex.ru/legal/practicum_offer/</string>
     <string name="web_document">https://practicum.yandex.ru/android-developer/</string>
+    <string name="no_web">Проблемы со связью\n\nЗагрузка не удалась.
+        Проверьте подключение к интернету</string>
+    <string name="no_content">Ничего не нашлось</string>
+    <string name="update">Обновить</string>
+    <string name="search_text">search_text</string>
 
 </resources>

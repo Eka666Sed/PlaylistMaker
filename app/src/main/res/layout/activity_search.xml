@@ -34,6 +34,8 @@
             android:maxLines="1"
             android:minHeight="48dp"
             android:padding="10dp"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="@color/colorHint" />
 
@@ -50,10 +52,62 @@
             tools:ignore="SpeakableTextPresentCheck" />
     </FrameLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/track_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="top"
+            android:gravity="center"
+            android:layout_marginTop="102dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_message"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                app:srcCompat="@drawable/no_content"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="match_parent"
+                android:layout_height="88dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/ys_display_medium"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:padding="4dp"
+                android:visibility="invisible"
+                tools:text="text_view" />
+
+            <Button
+                android:id="@+id/btn_message"
+                android:layout_width="96dp"
+                android:layout_height="48dp"
+                android:background="@drawable/custom_support"
+                android:fontFamily="@font/ys_display_medium"
+                android:lineHeight="16dp"
+                android:padding="6dp"
+                android:text="@string/update"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>
