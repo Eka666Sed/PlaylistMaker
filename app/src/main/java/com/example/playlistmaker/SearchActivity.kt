@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
@@ -23,6 +24,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+private const val KEY = "save_data"
 class SearchActivity : AppCompatActivity() {
     private var toolbarSettings: Toolbar? = null
     private var search: EditText? = null
@@ -32,7 +34,8 @@ class SearchActivity : AppCompatActivity() {
     private var tvMessage: TextView? = null
     private var btnMessage: Button? = null
     private var savedText: String = ""
-    private var binding:ActivitySearchBinding? = null
+    private var binding: ActivitySearchBinding? = null
+    private var btnClearHistory: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,15 +48,19 @@ class SearchActivity : AppCompatActivity() {
         tvMessage = binding?.tvMessage
         btnMessage = binding?.btnMessage
         toolbarSettings = binding?.toolbarSettings
+        btnClearHistory = binding?.btnClearHistory
         button?.visibility = View.INVISIBLE
         toolbarSettings?.setNavigationOnClickListener { onBackPressed() }
+        showHistoryRequest()
         searchButton()
         updateData()
+        clearSharedPreference()
         if (savedInstanceState != null) {
             savedText = savedInstanceState.getString((getString(R.string.search_text)), "")
             search?.setText(savedText)
         }
         textWatcher()
+        getActionEditText()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -67,6 +74,7 @@ class SearchActivity : AppCompatActivity() {
         savedText = savedInstanceState.getString((getString(R.string.search_text)), "")
         search?.setText(savedText)
     }
+
 
     private fun textWatcher() {
         val myTextWatcher = object : TextWatcher {
@@ -92,9 +100,12 @@ class SearchActivity : AppCompatActivity() {
             hideKeyboard()
             hidePicture()
             clearAdapter()
+            showButtonClear(true)
+            showHistoryRequest()
         }
     }
-    private fun hidePicture(){
+
+    private fun hidePicture() {
         iVMessage?.visibility = View.INVISIBLE
         tvMessage?.visibility = View.INVISIBLE
     }
@@ -102,27 +113,36 @@ class SearchActivity : AppCompatActivity() {
     private fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(button?.windowToken, 0)
+        showButtonClear(true)
     }
 
-    private fun clearAdapter(){
-        val clearAdapter = TrackAdapter(this)
+    private fun showButtonClear(show: Boolean) {
+        if (show) btnClearHistory?.visibility = View.VISIBLE
+        else btnClearHistory?.visibility = View.INVISIBLE
+    }
+
+    private fun clearAdapter() {
+        val clearAdapter = TrackAdapter(this, createSharedPreference(),KEY)
         clearAdapter.clearListAdapter()
         rv?.adapter = clearAdapter
     }
-    private fun updateData(){
-        btnMessage?.setOnClickListener {getWebRequest()}
+
+    private fun updateData() {
+        btnMessage?.setOnClickListener { getWebRequest() }
     }
 
     private fun searchButton() {
         search?.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                showButtonClear(false)
                 clearAdapter()
                 getWebRequest()
             }
             return@setOnEditorActionListener false
         }
     }
-    private fun getWebRequest(){
+
+    private fun getWebRequest() {
         val query = search?.text.toString().trim()
         val apiService = TrackApiService.create
         apiService.search(query).enqueue(object : Callback<ResponseTrack> {
@@ -149,7 +169,7 @@ class SearchActivity : AppCompatActivity() {
             btnMessage?.visibility = View.INVISIBLE
             tvMessage?.text = ""
 
-            val trackAdapter = TrackAdapter(this@SearchActivity)
+            val trackAdapter = TrackAdapter(this@SearchActivity, createSharedPreference(),KEY)
             rv?.layoutManager = LinearLayoutManager(this@SearchActivity)
             rv?.adapter = trackAdapter
             trackAdapter.updateData(trackList)
@@ -191,5 +211,40 @@ class SearchActivity : AppCompatActivity() {
     private fun isNightModeEnabled(): Boolean {
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES
+    }
+
+    private fun showHistoryRequest() {
+        val trackAdapter = dataForTrackHistoryAdapter()
+        trackAdapter.readPref()
+        if(trackAdapter.readPref().isEmpty()) showButtonClear(false)
+        else showButtonClear(true)
+        rv?.visibility = View.VISIBLE
+        rv?.adapter = trackAdapter
+    }
+
+    private fun createSharedPreference(): SharedPreferences {
+        val name = getString(R.string.prefData)
+        return getSharedPreferences(name, MODE_PRIVATE)
+    }
+
+    private fun clearSharedPreference() {
+        btnClearHistory?.setOnClickListener {
+            createSharedPreference().edit().clear().apply()
+            dataForTrackHistoryAdapter().clearListAdapter()
+            showButtonClear(false)
+        }
+    }
+
+    private fun dataForTrackHistoryAdapter(): TrackHistoryAdapter {
+        val trackAdapter = TrackHistoryAdapter(this@SearchActivity, createSharedPreference(),KEY)
+        rv?.layoutManager = LinearLayoutManager(this@SearchActivity)
+        rv?.adapter = trackAdapter
+        return trackAdapter
+    }
+    private fun getActionEditText(){
+        search?.setOnFocusChangeListener { view, hasFocus ->
+            if(hasFocus) showButtonClear(false)
+            else showButtonClear(true)
+        }
     }
 }

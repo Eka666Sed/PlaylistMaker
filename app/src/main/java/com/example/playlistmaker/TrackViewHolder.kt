@@ -22,7 +22,6 @@ class TrackViewHolder(track: View, private val context: Context) : RecyclerView.
         val requestOptions = RequestOptions()
             .placeholder(R.drawable.placeholder)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-
         artistName.text = track.artistName
         trackName.text = track.trackName
         trackTime.text = track.getFormattedTrackTime()
@@ -31,6 +30,7 @@ class TrackViewHolder(track: View, private val context: Context) : RecyclerView.
             .load(track.artworkUrl100)
             .transform(CenterCrop(), RoundedCorners(dpToPx(radiusCorners, context)))
             .into(artworkUrl100)
+
     }
 
     private fun dpToPx(dp: Float, context: Context): Int {

@@ -22,17 +22,16 @@
         android:paddingStart="16dp"
         tools:ignore="RtlSymmetry">
 
-        <Switch
-            android:id="@+id/switchTheme"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/themeSwither"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
             android:fontFamily="@font/ys_display_medium"
-            android:paddingEnd="6dp"
-            android:text="@string/dark_theme"
             android:textSize="16sp"
-            tools:ignore="RtlSymmetry,UseSwitchCompatOrMaterialXml,VisualLintButtonSize"
-            android:trackTint="@color/colorSwitch"
-            android:thumbTint="@color/colorSwitchBackground"/>
+            android:textStyle="normal"
+            android:paddingLeft="0dp"
+            android:text="@string/dark_theme" />
 
         <Button
             android:id="@+id/buttonShareApp"

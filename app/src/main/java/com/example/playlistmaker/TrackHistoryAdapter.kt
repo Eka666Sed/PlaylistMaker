@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 
-
-class TrackAdapter(
+class TrackHistoryAdapter(
     private val context: Context,
     private val pref: SharedPreferences,
     private val key:String
@@ -25,38 +24,29 @@ class TrackAdapter(
     }
 
     override fun getItemCount(): Int {
-        return listTrack.size
+        return if(listTrack.size >= 10) 10
+        else listTrack.size
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val item = listTrack[position]
         holder.bind(item)
-        holder.itemView.setOnClickListener {write(item,position)}
-    }
-
-    fun updateData(newListTrack: List<Track>) {
-        listTrack = newListTrack
-        notifyDataSetChanged()
+        holder.itemView.setOnClickListener { notifyItemMoved(position,0) }
     }
 
     fun clearListAdapter() {
         listTrack = emptyList()
         notifyDataSetChanged()
     }
-    private fun write(track: Track, position: Int) {
-        val json = Gson().toJson(track)
-        val setTrack = pref.getStringSet(key, HashSet())?.toMutableSet() ?: HashSet()
 
-        if (setTrack.contains(json)) {
-            notifyItemMoved(position,0)
+    fun readPref() : List<Track> {
+        val json = pref.getStringSet(key, HashSet())?.toMutableSet() ?: HashSet()
+        Log.d("TrackAdapter",json.toString())
+        val trackSet = json.map { json ->
+            Gson().fromJson(json,Track::class.java)
         }
-        setTrack.add(json)
-        pref.edit()
-            .putStringSet(key, setTrack)
-            .apply()
-        if (position != -1) {
-            notifyItemChanged(position)
-        }
-        Log.d("possition",position.toString())
+        Log.d("TrackAdapter",trackSet.toString())
+        listTrack = trackSet
+        return listTrack
     }
 }
