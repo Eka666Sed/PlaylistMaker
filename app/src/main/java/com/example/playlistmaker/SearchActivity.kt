@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -24,7 +25,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-private const val KEY = "save_data"
+
+private const val NEW_TRACK = "new_track"
+private const val MAIN_KEY = "main_key"
+
+
 class SearchActivity : AppCompatActivity() {
     private var toolbarSettings: Toolbar? = null
     private var search: EditText? = null
@@ -36,6 +41,9 @@ class SearchActivity : AppCompatActivity() {
     private var savedText: String = ""
     private var binding: ActivitySearchBinding? = null
     private var btnClearHistory: Button? = null
+    private var textHint:TextView? = null
+    private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
+    private var listTrack = mutableListOf<Track>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +57,12 @@ class SearchActivity : AppCompatActivity() {
         btnMessage = binding?.btnMessage
         toolbarSettings = binding?.toolbarSettings
         btnClearHistory = binding?.btnClearHistory
+        textHint = binding?.tvHint
         button?.visibility = View.INVISIBLE
         toolbarSettings?.setNavigationOnClickListener { onBackPressed() }
+        getDataTrack()
+        showAdapterHistory()
+        getDataForTrack()
         showHistoryRequest()
         searchButton()
         updateData()
@@ -63,6 +75,11 @@ class SearchActivity : AppCompatActivity() {
         getActionEditText()
     }
 
+    override fun onStop() {
+        super.onStop()
+        saveDataTrack()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         savedText = search?.text.toString()
@@ -73,6 +90,26 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         savedText = savedInstanceState.getString((getString(R.string.search_text)), "")
         search?.setText(savedText)
+    }
+
+    private fun saveDataTrack(){
+        val sharedPreferencesConverter = SharedPreferenceConverter
+        createSharedPreference().edit()
+            .putString(MAIN_KEY,sharedPreferencesConverter.createJsonFromTracksList(listTrack))
+            .apply()
+    }
+
+    private fun getDataTrack(){
+        val sharedPreferencesConverter = SharedPreferenceConverter
+        val tracks = createSharedPreference().getString(MAIN_KEY,null)
+        if(tracks != null){
+            listTrack = sharedPreferencesConverter.createTracksListFromJson(tracks).toMutableList()
+        }
+    }
+
+    private fun showAdapterHistory(){
+        val trackAdapter = dataForTrackHistoryAdapter()
+        trackAdapter.update(listTrack)
     }
 
 
@@ -117,12 +154,18 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showButtonClear(show: Boolean) {
-        if (show) btnClearHistory?.visibility = View.VISIBLE
-        else btnClearHistory?.visibility = View.INVISIBLE
+        if (show) {
+            btnClearHistory?.visibility = View.VISIBLE
+            textHint?.visibility = View.VISIBLE
+        }
+        else {
+            btnClearHistory?.visibility = View.INVISIBLE
+            textHint?.visibility = View.GONE
+        }
     }
 
     private fun clearAdapter() {
-        val clearAdapter = TrackAdapter(this, createSharedPreference(),KEY)
+        val clearAdapter = TrackAdapter(this, createSharedPreference())
         clearAdapter.clearListAdapter()
         rv?.adapter = clearAdapter
     }
@@ -159,7 +202,6 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
-
     private fun handleResponse(response: Response<ResponseTrack>) {
         val trackList = response.body()?.results ?: emptyList()
 
@@ -169,7 +211,8 @@ class SearchActivity : AppCompatActivity() {
             btnMessage?.visibility = View.INVISIBLE
             tvMessage?.text = ""
 
-            val trackAdapter = TrackAdapter(this@SearchActivity, createSharedPreference(),KEY)
+            val trackAdapter =
+                TrackAdapter(this@SearchActivity, createSharedPreference())
             rv?.layoutManager = LinearLayoutManager(this@SearchActivity)
             rv?.adapter = trackAdapter
             trackAdapter.updateData(trackList)
@@ -215,8 +258,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showHistoryRequest() {
         val trackAdapter = dataForTrackHistoryAdapter()
-        trackAdapter.readPref()
-        if(trackAdapter.readPref().isEmpty()) showButtonClear(false)
+        createSharedPreference().registerOnSharedPreferenceChangeListener(listener)
+        trackAdapter.update(listTrack)
+        if (trackAdapter.list.isEmpty()) showButtonClear(false)
         else showButtonClear(true)
         rv?.visibility = View.VISIBLE
         rv?.adapter = trackAdapter
@@ -231,20 +275,38 @@ class SearchActivity : AppCompatActivity() {
         btnClearHistory?.setOnClickListener {
             createSharedPreference().edit().clear().apply()
             dataForTrackHistoryAdapter().clearListAdapter()
+            listTrack.clear()
             showButtonClear(false)
         }
     }
 
     private fun dataForTrackHistoryAdapter(): TrackHistoryAdapter {
-        val trackAdapter = TrackHistoryAdapter(this@SearchActivity, createSharedPreference(),KEY)
+        val trackAdapter =
+            TrackHistoryAdapter(this@SearchActivity)
         rv?.layoutManager = LinearLayoutManager(this@SearchActivity)
         rv?.adapter = trackAdapter
         return trackAdapter
     }
-    private fun getActionEditText(){
+
+    private fun getActionEditText() {
         search?.setOnFocusChangeListener { view, hasFocus ->
-            if(hasFocus) showButtonClear(false)
+            if (hasFocus) showButtonClear(false)
             else showButtonClear(true)
+        }
+    }
+
+    private fun getDataForTrack() {
+        val trackAdapter = TrackHistoryAdapter(this@SearchActivity)
+        val sharedPreferenceConverter = SharedPreferenceConverter
+        listener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+            if (key == NEW_TRACK) {
+                val track = sharedPreferences?.getString(NEW_TRACK, null)
+                if (track != null) {
+                    listTrack.add(0,sharedPreferenceConverter.createTrackFromJson(track))
+                    trackAdapter.notifyItemInserted(0)
+                    Log.d("listTrack",trackAdapter.list.toString())
+                }
+            }
         }
     }
 }

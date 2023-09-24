@@ -6,17 +6,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 
 
 class TrackAdapter(
     private val context: Context,
-    private val pref: SharedPreferences,
-    private val key:String
+    private val pref: SharedPreferences
 ) :
     RecyclerView.Adapter<TrackViewHolder>() {
 
     private var listTrack: List<Track> = emptyList()
+    private val newTrack = "new_track"
+    private val sharedPreferenceConverter = SharedPreferenceConverter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -31,7 +31,7 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val item = listTrack[position]
         holder.bind(item)
-        holder.itemView.setOnClickListener {write(item,position)}
+        holder.itemView.setOnClickListener {write(item)}
     }
 
     fun updateData(newListTrack: List<Track>) {
@@ -43,20 +43,10 @@ class TrackAdapter(
         listTrack = emptyList()
         notifyDataSetChanged()
     }
-    private fun write(track: Track, position: Int) {
-        val json = Gson().toJson(track)
-        val setTrack = pref.getStringSet(key, HashSet())?.toMutableSet() ?: HashSet()
-
-        if (setTrack.contains(json)) {
-            notifyItemMoved(position,0)
-        }
-        setTrack.add(json)
+    private fun write(track: Track) {
         pref.edit()
-            .putStringSet(key, setTrack)
+            .putString(newTrack,sharedPreferenceConverter.createJsonFromTrack(track))
             .apply()
-        if (position != -1) {
-            notifyItemChanged(position)
-        }
-        Log.d("possition",position.toString())
+        Log.d("write",track.toString())
     }
 }
