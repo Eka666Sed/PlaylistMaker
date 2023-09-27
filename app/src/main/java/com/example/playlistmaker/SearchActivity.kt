@@ -33,12 +33,13 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        binding?.editTextSearch?.onFocusChangeListener
         binding?.clearButton?.visibility = View.INVISIBLE
         binding?.toolbarSettings?.setNavigationOnClickListener { onBackPressed() }
         prefData = getSharedPreferences(PREF, MODE_PRIVATE)
-        binding?.trackRecyclerView?.layoutManager = LinearLayoutManager(this@SearchActivity)
-        binding?.trackRecyclerView?.adapter = trackAdapter
-
+        binding?.editTextSearch?.isFocusable = true
+        showButtonClear(false)
+        binding?.editTextSearch?.requestFocus()
         if (savedInstanceState != null) {
             savedText = savedInstanceState.getString((getString(R.string.search_text)), "")
             binding?.editTextSearch?.setText(savedText)
@@ -100,6 +101,7 @@ class SearchActivity : AppCompatActivity() {
                     binding?.clearButton?.visibility = View.INVISIBLE
                 } else {
                     binding?.clearButton?.visibility = View.VISIBLE
+                    showButtonClear(false)
                 }
             }
 
@@ -108,6 +110,7 @@ class SearchActivity : AppCompatActivity() {
         binding?.editTextSearch?.doOnTextChanged { text, _, _, _ ->
             myTextWatcher.onTextChanged(text, 0, 0, 0)
         }
+
         binding?.clearButton?.setOnClickListener {
             binding?.editTextSearch?.text?.clear()
             hideKeyboard()
@@ -126,16 +129,22 @@ class SearchActivity : AppCompatActivity() {
     private fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding?.clearButton?.windowToken, 0)
-        showButtonClear(true)
     }
 
     private fun showButtonClear(show: Boolean) {
         if (show) {
             binding?.btnClearHistory?.visibility = View.VISIBLE
             binding?.tvHint?.visibility = View.VISIBLE
+            binding?.trackRecyclerView?.visibility = View.VISIBLE
+            binding?.trackRecyclerView?.layoutManager = LinearLayoutManager(this@SearchActivity)
+            binding?.trackRecyclerView?.adapter = trackAdapter
         } else {
             binding?.btnClearHistory?.visibility = View.INVISIBLE
             binding?.tvHint?.visibility = View.GONE
+            binding?.trackRecyclerView?.visibility = View.INVISIBLE
+            binding?.trackRecyclerView?.layoutManager = LinearLayoutManager(this@SearchActivity)
+            trackAdapter.clearListAdapter()
+            binding?.trackRecyclerView?.adapter = trackAdapter
         }
     }
 
@@ -152,11 +161,11 @@ class SearchActivity : AppCompatActivity() {
     private fun searchButton() {
         binding?.editTextSearch?.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                showButtonClear(true)
+                //showButtonClear(true)
+                binding?.btnClearHistory?.visibility = View.INVISIBLE
+                binding?.tvHint?.visibility = View.GONE
                 clearAdapter()
                 getWebRequest()
-                showButtonClear(false)
-                binding?.trackRecyclerView?.visibility = View.VISIBLE
             }
             return@setOnEditorActionListener false
         }
@@ -244,10 +253,6 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showHistoryRequest() {
         trackAdapter.update(listTrack)
-        if (trackAdapter.list.isEmpty()) showButtonClear(false)
-        else showButtonClear(true)
-        binding?.trackRecyclerView?.visibility = View.VISIBLE
-        binding?.trackRecyclerView?.adapter = trackAdapter
     }
 
     private fun getDataForTrack() {
