@@ -33,11 +33,9 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        binding?.editTextSearch?.onFocusChangeListener
         binding?.clearButton?.visibility = View.INVISIBLE
         binding?.toolbarSettings?.setNavigationOnClickListener { onBackPressed() }
         prefData = getSharedPreferences(PREF, MODE_PRIVATE)
-        binding?.editTextSearch?.isFocusable = true
         showButtonClear(false)
         binding?.editTextSearch?.requestFocus()
         if (savedInstanceState != null) {
@@ -111,11 +109,17 @@ class SearchActivity : AppCompatActivity() {
             myTextWatcher.onTextChanged(text, 0, 0, 0)
         }
 
+        binding?.editTextSearch?.setOnClickListener {
+            if (trackAdapter.itemCount>0) {
+                showButtonClear(true)
+                showHistoryRequest()
+            }
+        }
+
         binding?.clearButton?.setOnClickListener {
             binding?.editTextSearch?.text?.clear()
             hideKeyboard()
             hidePicture()
-            clearAdapter()
             showButtonClear(true)
             showHistoryRequest()
         }
@@ -161,7 +165,7 @@ class SearchActivity : AppCompatActivity() {
     private fun searchButton() {
         binding?.editTextSearch?.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                //showButtonClear(true)
+                showButtonClear(true)
                 binding?.btnClearHistory?.visibility = View.INVISIBLE
                 binding?.tvHint?.visibility = View.GONE
                 clearAdapter()
@@ -277,7 +281,6 @@ class SearchActivity : AppCompatActivity() {
                     addTrack(track!!)
                 }
             }
-
         }
     }
 }
