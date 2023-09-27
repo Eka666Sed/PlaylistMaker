@@ -16,10 +16,7 @@ class TrackHistoryAdapter(private val context: Context) : RecyclerView.Adapter<T
         return TrackViewHolder(view, context)
     }
 
-    override fun getItemCount(): Int {
-        return if (list.size >= 10) 10
-        else list.size
-    }
+    override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val item = list[position]
