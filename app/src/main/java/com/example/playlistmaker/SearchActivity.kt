@@ -33,14 +33,18 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        binding?.editTextSearch?.onFocusChangeListener
         binding?.clearButton?.visibility = View.INVISIBLE
         binding?.toolbarSettings?.setNavigationOnClickListener { onBackPressed() }
         prefData = getSharedPreferences(PREF, MODE_PRIVATE)
-        showButtonClear(false)
-        binding?.editTextSearch?.requestFocus()
         if (savedInstanceState != null) {
             savedText = savedInstanceState.getString((getString(R.string.search_text)), "")
             binding?.editTextSearch?.setText(savedText)
+        }
+        binding?.editTextSearch?.setOnFocusChangeListener { _, hasFocus ->
+            if ((hasFocus) && (trackAdapter.itemCount > 0)) {
+                showButtonClear(true)
+            }
         }
     }
 
@@ -60,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         val pref = SharedPreferenceWorkPlace
-        pref.saveDataTrack(prefData,listTrack, MAIN_KEY)
+        pref.saveDataTrack(prefData, listTrack, MAIN_KEY)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -105,15 +109,9 @@ class SearchActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         }
+
         binding?.editTextSearch?.doOnTextChanged { text, _, _, _ ->
             myTextWatcher.onTextChanged(text, 0, 0, 0)
-        }
-
-        binding?.editTextSearch?.setOnClickListener {
-            if (trackAdapter.itemCount>0) {
-                showButtonClear(true)
-                showHistoryRequest()
-            }
         }
 
         binding?.clearButton?.setOnClickListener {
@@ -126,8 +124,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun hidePicture() {
-        binding?.ivMessage?.visibility = View.INVISIBLE
-        binding?.tvMessage?.visibility = View.INVISIBLE
+        binding?.apply {
+            ivMessage?.visibility = View.INVISIBLE
+            tvMessage?.visibility = View.INVISIBLE
+        }
     }
 
     private fun hideKeyboard() {
@@ -137,18 +137,22 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showButtonClear(show: Boolean) {
         if (show) {
-            binding?.btnClearHistory?.visibility = View.VISIBLE
-            binding?.tvHint?.visibility = View.VISIBLE
-            binding?.trackRecyclerView?.visibility = View.VISIBLE
-            binding?.trackRecyclerView?.layoutManager = LinearLayoutManager(this@SearchActivity)
-            binding?.trackRecyclerView?.adapter = trackAdapter
+            binding?.apply {
+                btnClearHistory?.visibility = View.VISIBLE
+                tvHint?.visibility = View.VISIBLE
+                trackRecyclerView?.visibility = View.VISIBLE
+                trackRecyclerView?.layoutManager = LinearLayoutManager(this@SearchActivity)
+                trackRecyclerView?.adapter = trackAdapter
+            }
         } else {
-            binding?.btnClearHistory?.visibility = View.INVISIBLE
-            binding?.tvHint?.visibility = View.GONE
-            binding?.trackRecyclerView?.visibility = View.INVISIBLE
-            binding?.trackRecyclerView?.layoutManager = LinearLayoutManager(this@SearchActivity)
+            binding?.apply {
+                btnClearHistory?.visibility = View.INVISIBLE
+                tvHint?.visibility = View.GONE
+                trackRecyclerView?.visibility = View.INVISIBLE
+                trackRecyclerView?.layoutManager = LinearLayoutManager(this@SearchActivity)
+                trackRecyclerView?.adapter = trackAdapter
+            }
             trackAdapter.clearListAdapter()
-            binding?.trackRecyclerView?.adapter = trackAdapter
         }
     }
 
@@ -196,10 +200,12 @@ class SearchActivity : AppCompatActivity() {
         val trackList = response.body()?.results ?: emptyList()
 
         if (response.isSuccessful && trackList.isNotEmpty()) {
-            binding?.trackRecyclerView?.visibility = View.VISIBLE
-            binding?.ivMessage?.visibility = View.INVISIBLE
-            binding?.btnMessage?.visibility = View.INVISIBLE
-            binding?.tvMessage?.text = ""
+            binding?.apply {
+                trackRecyclerView?.visibility = View.VISIBLE
+                ivMessage?.visibility = View.INVISIBLE
+                btnMessage?.visibility = View.INVISIBLE
+                tvMessage?.text = ""
+            }
 
             val trackAdapter =
                 TrackAdapter(this@SearchActivity, prefData)
@@ -208,10 +214,12 @@ class SearchActivity : AppCompatActivity() {
             trackAdapter.updateData(trackList)
 
         } else {
-            binding?.trackRecyclerView?.visibility = View.INVISIBLE
-            binding?.ivMessage?.visibility = View.VISIBLE
-            binding?.tvMessage?.visibility = View.VISIBLE
-            binding?.btnMessage?.visibility = View.INVISIBLE
+            binding?.apply {
+                trackRecyclerView?.visibility = View.INVISIBLE
+                ivMessage?.visibility = View.VISIBLE
+                tvMessage?.visibility = View.VISIBLE
+                btnMessage?.visibility = View.INVISIBLE
+            }
 
             if (response.isSuccessful) {
                 binding?.tvMessage?.text = getString(R.string.no_content)
@@ -230,15 +238,17 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun handleFailure() {
-        binding?.trackRecyclerView?.visibility = View.INVISIBLE
-        binding?.ivMessage?.visibility = View.VISIBLE
-        binding?.tvMessage?.visibility = View.VISIBLE
-        binding?.btnMessage?.visibility = View.VISIBLE
-        binding?.tvMessage?.text = getString(R.string.no_web)
-        binding?.ivMessage?.setImageResource(
-            if (isNightModeEnabled()) R.drawable.dark_no_web
-            else R.drawable.no_web
-        )
+        binding?.apply {
+            trackRecyclerView?.visibility = View.INVISIBLE
+            ivMessage?.visibility = View.VISIBLE
+            tvMessage?.visibility = View.VISIBLE
+            btnMessage?.visibility = View.VISIBLE
+            tvMessage?.text = getString(R.string.no_web)
+            ivMessage?.setImageResource(
+                if (isNightModeEnabled()) R.drawable.dark_no_web
+                else R.drawable.no_web
+            )
+        }
     }
 
     private fun isNightModeEnabled(): Boolean {
@@ -261,7 +271,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun getDataForTrack() {
         val sharedPreferenceConverter = SharedPreferenceConverter
-        fun addTrack(track: String){
+        fun addTrack(track: String) {
             val createTrack = sharedPreferenceConverter.createTrackFromJson(track)
             if (listTrack.contains(createTrack)) {
                 listTrack.remove(createTrack)
@@ -276,7 +286,7 @@ class SearchActivity : AppCompatActivity() {
                     if (track != null) {
                         addTrack(track)
                     }
-                }else{
+                } else {
                     listTrack.removeLast()
                     addTrack(track!!)
                 }
