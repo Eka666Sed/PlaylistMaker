@@ -3,14 +3,13 @@ package com.example.playlistmaker
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -18,8 +17,9 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var shareButton: Button
     private lateinit var buttonWriteSupport: Button
     private lateinit var buttonUserAgreement: Button
+
     @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private lateinit var themeSwitch: Switch
+    private lateinit var themeSwitch: SwitchMaterial
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,13 +28,12 @@ class SettingsActivity : AppCompatActivity() {
         shareButton = findViewById(R.id.buttonShareApp)
         buttonWriteSupport = findViewById(R.id.buttonWriteSupport)
         buttonUserAgreement = findViewById(R.id.buttonUserAgreement)
-        themeSwitch = findViewById(R.id.switchTheme)
-        val isDarkMode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
-        themeSwitch.isChecked = isDarkMode
+        themeSwitch = findViewById(R.id.themeSwither)
+        checkTheme()
         setUpToolbar()
         onClickListenerButton()
-
     }
+
     private fun setUpToolbar() {
         toolbar = findViewById(R.id.toolbarSettings)
         toolbar.setNavigationOnClickListener { onBackPressed() }
@@ -50,14 +49,20 @@ class SettingsActivity : AppCompatActivity() {
         val shareIntent = Intent.createChooser(sendIntent, null)
         activity.startActivity(shareIntent)
     }
-    private fun toggleTheme(isChecked: Boolean) {
-        if (isChecked) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            shareButton.setBackgroundColor(Color.BLACK)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+    private fun toggleTheme(checked:Boolean) {
+        (applicationContext as App).apply {
+            switchTheme(checked)
+            saveData(checked)
         }
     }
+    private fun checkTheme(){
+        when (AppCompatDelegate.getDefaultNightMode()) {
+            AppCompatDelegate.MODE_NIGHT_YES -> themeSwitch.isChecked = true
+            AppCompatDelegate.MODE_NIGHT_NO -> themeSwitch.isChecked = false
+        }
+    }
+
     private fun openEmailApp() {
         val message = getString(R.string.email_message)
         val theme = getString(R.string.email_theme)
@@ -76,7 +81,7 @@ class SettingsActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun onClickListenerButton(){
+    private fun onClickListenerButton() {
         shareButton.setOnClickListener {
             shareText(getString(R.string.web_document), this)
         }
@@ -86,8 +91,8 @@ class SettingsActivity : AppCompatActivity() {
         buttonUserAgreement.setOnClickListener {
             parseWeb()
         }
-        themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            toggleTheme(isChecked)
+        themeSwitch.setOnCheckedChangeListener { switcher, checked ->
+            toggleTheme(checked)
         }
     }
 }

@@ -20,5 +20,7 @@
     <string name="no_content">Ничего не нашлось</string>
     <string name="update">Обновить</string>
     <string name="search_text">search_text</string>
+    <string name="hint">Вы искали</string>
+    <string name="history_clear">Очистить историю</string>
 
 </resources>
