@@ -1,13 +1,16 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class TrackHistoryAdapter(private val context: Context) : RecyclerView.Adapter<TrackViewHolder>() {
 
-    var list = mutableListOf<Track>()
+    private var list = mutableListOf<Track>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
@@ -20,7 +23,16 @@ class TrackHistoryAdapter(private val context: Context) : RecyclerView.Adapter<T
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val item = list[position]
+
+        val bundle = Bundle()
         holder.bind(item)
+        holder.itemView.setOnClickListener {
+            val itemJson = SharedPreferenceConverter.createJsonFromTrack(item)
+            val intent = Intent(context, MediaActivity::class.java)
+            intent.putExtra("key", itemJson)
+            context.startActivity(intent)
+            Log.d("mes", itemJson)
+        }
     }
 
     fun clearListAdapter() {

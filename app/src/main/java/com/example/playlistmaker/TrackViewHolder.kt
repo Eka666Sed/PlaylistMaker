@@ -30,7 +30,6 @@ class TrackViewHolder(track: View, private val context: Context) : RecyclerView.
             .load(track.artworkUrl100)
             .transform(CenterCrop(), RoundedCorners(dpToPx(radiusCorners, context)))
             .into(artworkUrl100)
-
     }
 
     private fun dpToPx(dp: Float, context: Context): Int {

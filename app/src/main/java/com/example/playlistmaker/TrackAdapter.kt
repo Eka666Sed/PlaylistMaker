@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
@@ -31,7 +32,15 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val item = listTrack[position]
         holder.bind(item)
-        holder.itemView.setOnClickListener {write(item)}
+        holder.itemView.setOnClickListener {
+            write(item)
+            holder.bind(item)
+            val itemJson = SharedPreferenceConverter.createJsonFromTrack(item)
+            val intent = Intent(context, MediaActivity::class.java)
+            intent.putExtra("key", itemJson)
+            context.startActivity(intent)
+            Log.d("mes", itemJson)
+        }
     }
 
     fun updateData(newListTrack: List<Track>) {
@@ -43,10 +52,11 @@ class TrackAdapter(
         listTrack = emptyList()
         notifyDataSetChanged()
     }
+
     private fun write(track: Track) {
         pref.edit()
-            .putString(newTrack,sharedPreferenceConverter.createJsonFromTrack(track))
+            .putString(newTrack, sharedPreferenceConverter.createJsonFromTrack(track))
             .apply()
-        Log.d("write",track.toString())
+        Log.d("write", track.toString())
     }
 }
