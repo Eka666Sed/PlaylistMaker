@@ -2,7 +2,6 @@ package com.example.playlistmaker
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -24,12 +23,11 @@ class TrackHistoryAdapter(private val context: Context) : RecyclerView.Adapter<T
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val item = list[position]
 
-        val bundle = Bundle()
         holder.bind(item)
         holder.itemView.setOnClickListener {
             val itemJson = SharedPreferenceConverter.createJsonFromTrack(item)
             val intent = Intent(context, MediaActivity::class.java)
-            intent.putExtra("key", itemJson)
+            intent.putExtra(Constant.KEY, itemJson)
             context.startActivity(intent)
             Log.d("mes", itemJson)
         }

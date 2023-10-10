@@ -30,4 +30,6 @@
     <string name="artist_name">Имя артиста</string>
     <string name="track_name">Название трека</string>
     <string name="track_time">trackTime</string>
+    <string name="playlist_create">Плэйлист создан</string>
+
 </resources>

@@ -3,7 +3,6 @@ package com.example.playlistmaker
 import android.content.Context
 import android.util.Log
 import android.util.TypedValue
-import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy

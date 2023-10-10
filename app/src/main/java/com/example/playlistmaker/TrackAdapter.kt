@@ -37,7 +37,7 @@ class TrackAdapter(
             holder.bind(item)
             val itemJson = SharedPreferenceConverter.createJsonFromTrack(item)
             val intent = Intent(context, MediaActivity::class.java)
-            intent.putExtra("key", itemJson)
+            intent.putExtra(Constant.KEY, itemJson)
             context.startActivity(intent)
             Log.d("mes", itemJson)
         }

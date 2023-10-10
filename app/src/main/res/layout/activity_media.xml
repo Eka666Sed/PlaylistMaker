@@ -38,10 +38,12 @@
         android:id="@+id/iv_main"
         android:layout_width="280dp"
         android:layout_height="280dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:scaleType="centerCrop"
         android:src="@drawable/placeholder"
-        app:layout_constraintDimensionRatio="h,12:12"
+        app:layout_constraintBottom_toTopOf="@+id/tv_track_name"
+        app:layout_constraintDimensionRatio="h,16:16"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/toolbarMedia" />
@@ -50,42 +52,40 @@
         android:id="@+id/tv_track_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="12dp"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/track_name"
         android:textColor="@color/colorText"
         android:textSize="22sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tv_artist_name"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/iv_main" />
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft" />
 
     <TextView
         android:id="@+id/tv_artist_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/artist_name"
         android:textColor="@color/colorText"
         android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/ib_play"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tv_track_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_track_name" />
+        app:layout_constraintStart_toStartOf="@+id/tv_track_name" />
 
     <ImageView
         android:id="@+id/ib_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:background="@null"
         android:src="@drawable/button_play"
         app:layout_constraintBottom_toTopOf="@+id/tv_time_track"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/tv_artist_name" />
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft" />
 
     <ImageView
         android:id="@+id/ib_share"
@@ -93,9 +93,7 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:src="@drawable/add"
-
         app:layout_constraintBottom_toBottomOf="@+id/ib_play"
-
         app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
         app:layout_constraintTop_toTopOf="@+id/ib_play" />
 
@@ -106,10 +104,8 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:src="@drawable/like"
-
         app:layout_constraintBottom_toBottomOf="@+id/ib_play"
         app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
-
         app:layout_constraintTop_toTopOf="@+id/ib_play" />
 
     <TextView
@@ -120,9 +116,11 @@
         android:text="@string/track_time"
         android:textColor="@color/colorText"
         android:textSize="14sp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvDuration"
         app:layout_constraintEnd_toEndOf="@+id/ib_play"
-        app:layout_constraintStart_toStartOf="@+id/ib_play"
-        app:layout_constraintTop_toBottomOf="@+id/ib_play" />
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="@+id/ib_play" />
 
     <TextView
         android:id="@+id/tvCountry"
@@ -224,6 +222,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="17dp"
         android:ellipsize="end"
+        android:maxWidth="300dp"
+        android:maxLines="1"
         android:fontFamily="@font/ys_display_regular"
         android:text="@string/album"
         android:textColor="@color/colorText"
