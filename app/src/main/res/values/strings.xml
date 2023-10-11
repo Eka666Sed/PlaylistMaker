@@ -22,5 +22,14 @@
     <string name="search_text">search_text</string>
     <string name="hint">Вы искали</string>
     <string name="history_clear">Очистить историю</string>
+    <string name="duration">Длительность</string>
+    <string name="album">Альбом</string>
+    <string name="year">Год</string>
+    <string name="genre">Жанр</string>
+    <string name="country">Страна</string>
+    <string name="artist_name">Имя артиста</string>
+    <string name="track_name">Название трека</string>
+    <string name="track_time">trackTime</string>
+    <string name="playlist_create">Плэйлист создан</string>
 
 </resources>

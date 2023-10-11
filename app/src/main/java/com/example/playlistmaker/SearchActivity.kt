@@ -224,14 +224,12 @@ class SearchActivity : AppCompatActivity() {
             if (response.isSuccessful) {
                 binding?.tvMessage?.text = getString(R.string.no_content)
                 binding?.ivMessage?.setImageResource(
-                    if (isNightModeEnabled()) R.drawable.dark_no_content
-                    else R.drawable.no_content
+                     R.drawable.no_content
                 )
             } else {
                 binding?.tvMessage?.text = getString(R.string.no_web)
                 binding?.ivMessage?.setImageResource(
-                    if (isNightModeEnabled()) R.drawable.dark_no_content
-                    else R.drawable.no_content
+                     R.drawable.no_content
                 )
             }
         }
@@ -245,15 +243,9 @@ class SearchActivity : AppCompatActivity() {
             btnMessage?.visibility = View.VISIBLE
             tvMessage?.text = getString(R.string.no_web)
             ivMessage?.setImageResource(
-                if (isNightModeEnabled()) R.drawable.dark_no_web
-                else R.drawable.no_web
+                 R.drawable.no_web
             )
         }
-    }
-
-    private fun isNightModeEnabled(): Boolean {
-        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 
     private fun clearSharedPreference() {
