@@ -2,7 +2,6 @@ package com.example.playlistmaker
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -28,6 +27,7 @@ class SearchActivity : AppCompatActivity() {
     private var listTrack = mutableListOf<Track>()
     private lateinit var prefData: SharedPreferences
     private val trackAdapter = TrackHistoryAdapter(this@SearchActivity)
+    private val searchRunnable = Runnable { getWebRequest() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +104,7 @@ class SearchActivity : AppCompatActivity() {
                 } else {
                     binding?.clearButton?.visibility = View.VISIBLE
                     showButtonClear(false)
+                    DebounceWorkPlace.searchDebounce(searchRunnable)
                 }
             }
 
@@ -125,8 +126,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun hidePicture() {
         binding?.apply {
-            ivMessage?.visibility = View.INVISIBLE
-            tvMessage?.visibility = View.INVISIBLE
+            ivMessage.visibility = View.INVISIBLE
+            tvMessage.visibility = View.INVISIBLE
         }
     }
 
@@ -138,19 +139,19 @@ class SearchActivity : AppCompatActivity() {
     private fun showButtonClear(show: Boolean) {
         if (show) {
             binding?.apply {
-                btnClearHistory?.visibility = View.VISIBLE
-                tvHint?.visibility = View.VISIBLE
-                trackRecyclerView?.visibility = View.VISIBLE
-                trackRecyclerView?.layoutManager = LinearLayoutManager(this@SearchActivity)
-                trackRecyclerView?.adapter = trackAdapter
+                btnClearHistory.visibility = View.VISIBLE
+                tvHint.visibility = View.VISIBLE
+                trackRecyclerView.visibility = View.VISIBLE
+                trackRecyclerView.layoutManager = LinearLayoutManager(this@SearchActivity)
+                trackRecyclerView.adapter = trackAdapter
             }
         } else {
             binding?.apply {
-                btnClearHistory?.visibility = View.INVISIBLE
-                tvHint?.visibility = View.GONE
-                trackRecyclerView?.visibility = View.INVISIBLE
-                trackRecyclerView?.layoutManager = LinearLayoutManager(this@SearchActivity)
-                trackRecyclerView?.adapter = trackAdapter
+                btnClearHistory.visibility = View.INVISIBLE
+                tvHint.visibility = View.GONE
+                trackRecyclerView.visibility = View.INVISIBLE
+                trackRecyclerView.layoutManager = LinearLayoutManager(this@SearchActivity)
+                trackRecyclerView.adapter = trackAdapter
             }
             trackAdapter.clearListAdapter()
         }
@@ -181,19 +182,25 @@ class SearchActivity : AppCompatActivity() {
 
     private fun getWebRequest() {
         val query = binding?.editTextSearch?.text.toString().trim()
-        val apiService = TrackApiService.create
-        apiService.search(query).enqueue(object : Callback<ResponseTrack> {
-            override fun onResponse(
-                call: Call<ResponseTrack>,
-                response: Response<ResponseTrack>
-            ) {
-                handleResponse(response)
-            }
+        binding?.progressBar?.visibility = View.VISIBLE
+        if(query.isNotEmpty()) {
 
-            override fun onFailure(call: Call<ResponseTrack>, t: Throwable) {
-                handleFailure()
-            }
-        })
+            val apiService = TrackApiService.create
+            apiService.search(query).enqueue(object : Callback<ResponseTrack> {
+                override fun onResponse(
+                    call: Call<ResponseTrack>,
+                    response: Response<ResponseTrack>
+                ) {
+                    handleResponse(response)
+                    binding?.progressBar?.visibility = View.GONE
+                }
+
+                override fun onFailure(call: Call<ResponseTrack>, t: Throwable) {
+                    handleFailure()
+                    binding?.progressBar?.visibility = View.GONE
+                }
+            })
+        }
     }
 
     private fun handleResponse(response: Response<ResponseTrack>) {
@@ -201,10 +208,11 @@ class SearchActivity : AppCompatActivity() {
 
         if (response.isSuccessful && trackList.isNotEmpty()) {
             binding?.apply {
-                trackRecyclerView?.visibility = View.VISIBLE
-                ivMessage?.visibility = View.INVISIBLE
-                btnMessage?.visibility = View.INVISIBLE
-                tvMessage?.text = ""
+                trackRecyclerView.visibility = View.VISIBLE
+                ivMessage.visibility = View.INVISIBLE
+                btnMessage.visibility = View.INVISIBLE
+                tvMessage.text = ""
+                binding?.editTextSearch?.visibility = View.VISIBLE
             }
 
             val trackAdapter =
@@ -215,10 +223,10 @@ class SearchActivity : AppCompatActivity() {
 
         } else {
             binding?.apply {
-                trackRecyclerView?.visibility = View.INVISIBLE
-                ivMessage?.visibility = View.VISIBLE
-                tvMessage?.visibility = View.VISIBLE
-                btnMessage?.visibility = View.INVISIBLE
+                trackRecyclerView.visibility = View.INVISIBLE
+                ivMessage.visibility = View.VISIBLE
+                tvMessage.visibility = View.VISIBLE
+                btnMessage.visibility = View.INVISIBLE
             }
 
             if (response.isSuccessful) {
@@ -237,12 +245,12 @@ class SearchActivity : AppCompatActivity() {
 
     private fun handleFailure() {
         binding?.apply {
-            trackRecyclerView?.visibility = View.INVISIBLE
-            ivMessage?.visibility = View.VISIBLE
-            tvMessage?.visibility = View.VISIBLE
-            btnMessage?.visibility = View.VISIBLE
-            tvMessage?.text = getString(R.string.no_web)
-            ivMessage?.setImageResource(
+            trackRecyclerView.visibility = View.INVISIBLE
+            ivMessage.visibility = View.VISIBLE
+            tvMessage.visibility = View.VISIBLE
+            btnMessage.visibility = View.VISIBLE
+            tvMessage.text = getString(R.string.no_web)
+            ivMessage.setImageResource(
                  R.drawable.no_web
             )
         }
