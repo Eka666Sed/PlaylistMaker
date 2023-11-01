@@ -12,7 +12,8 @@ data class Track(
     @SerializedName("primaryGenreName") val primaryGenreName: String,
     @SerializedName("collectionName") val collectionName: String,
     @SerializedName("country") val country: String,
-    @SerializedName("releaseDate") val releaseDate: String
+    @SerializedName("releaseDate") val releaseDate: String,
+    @SerializedName("previewUrl") val previewUrl:String
 
 ) {
     fun getFormattedTrackTime(): String {
