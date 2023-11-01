@@ -4,9 +4,9 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.example.playlistmaker.databinding.ActivityMediaBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -15,9 +15,9 @@ class MediaActivity : AppCompatActivity() {
     private var binding: ActivityMediaBinding? = null
     private var mediaPlayer: MediaPlayer? = null
     private var mediaUri: Uri? = null
-    private var playerState = STATE_DEFAULT
+    private var playerState:State? = null
     private val handler = Handler()
-    private lateinit var progressRunnable: Runnable
+    private var progressRunnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,7 @@ class MediaActivity : AppCompatActivity() {
         binding?.toolbarMedia?.setNavigationOnClickListener {
             if (mediaPlayer?.isPlaying == true) {
                 mediaPlayer?.stop()
-                playerState = STATE_PAUSED
+                playerState = State.PAUSED
             }
             finish()
         }
@@ -39,10 +39,10 @@ class MediaActivity : AppCompatActivity() {
         }
         progressRunnable = object : Runnable {
             override fun run() {
-                val currentPosition = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer?.currentPosition)
+                val currentPosition = SimpleDateFormat(PATTERN, Locale.getDefault()).format(mediaPlayer?.currentPosition)
                 if (mediaPlayer?.isPlaying == true) {
                     binding?.tvTimeTrack?.text = currentPosition
-                    handler.postDelayed(this, 300)
+                    handler.postDelayed(this, TIME_VALUE_STEP)
                 }
                 else { pausePlayer() }
             }
@@ -57,13 +57,13 @@ class MediaActivity : AppCompatActivity() {
         super.onResume()
         binding?.ibPlay?.setOnClickListener {
             playbackControl()
-            handler.post(progressRunnable)
+            handler.post(progressRunnable!!)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacks(progressRunnable)
+        handler.removeCallbacks(progressRunnable!!)
         exitForTrack()
     }
 
@@ -74,8 +74,8 @@ class MediaActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (playerState != STATE_PAUSED) {
-            handler.removeCallbacks(progressRunnable)
+        if (playerState != State.PAUSED) {
+            handler.removeCallbacks(progressRunnable!!)
             exitForTrack()
         }
     }
@@ -88,18 +88,18 @@ class MediaActivity : AppCompatActivity() {
         mediaPlayer?.prepareAsync()
         mediaPlayer?.setOnPreparedListener{
             binding?.ibPlay?.isEnabled = true
-            playerState = STATE_PREPARED
+            playerState = State.PREPARED
         }
         mediaPlayer?.setOnCompletionListener {
             binding?.ibPlay?.setImageResource(R.drawable.button_play)
-            playerState = STATE_PREPARED
+            playerState = State.PREPARED
         }
         binding?.tvArtistName?.text = item.artistName
         binding?.tvTrackName?.text = item.trackName
         if (item.collectionName.isNotEmpty()) binding?.tvAlbumValue?.text = item.collectionName
         else {
-            binding?.tvAlbumValue?.visibility = View.GONE
-            binding?.tvAlbum?.visibility = View.GONE
+            binding?.tvAlbumValue?.isVisible = false
+            binding?.tvAlbum?.isVisible = false
         }
         binding?.tvCountryValue?.text = item.country
         binding?.tvYearValue?.text = item.getYearFormReleaseDate()
@@ -116,30 +116,30 @@ class MediaActivity : AppCompatActivity() {
     private fun pausePlayer() {
         mediaPlayer?.pause()
         binding?.ibPlay?.setImageResource(R.drawable.button_play)
-        playerState = STATE_PAUSED
+        playerState = State.PAUSED
     }
 
     private fun startPlayer(){
         if (!mediaPlayer?.isPlaying!!) {
             mediaPlayer?.start()
             binding?.ibPlay?.setImageResource(R.drawable.button_pause)
-            playerState = STATE_PLAYING
+            playerState = State.PLAYING
         }
     }
 
     private fun playbackControl() {
         when(playerState) {
-            STATE_PLAYING -> { pausePlayer() }
-            STATE_PREPARED, STATE_PAUSED -> { startPlayer() }
+            State.PLAYING -> pausePlayer()
+            State.PREPARED, State.PAUSED -> startPlayer()
+            State.DEFAULT -> {}
+            else -> {}
         }
     }
 
     companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
         private const val START_TRACK_VALUE = "00:00"
+        private const val TIME_VALUE_STEP = 300L
+        private const val PATTERN = "mm:ss"
     }
 }
 
