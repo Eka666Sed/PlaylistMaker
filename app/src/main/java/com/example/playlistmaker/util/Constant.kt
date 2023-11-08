@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.util
 
 object Constant {
     val KEY = "key"

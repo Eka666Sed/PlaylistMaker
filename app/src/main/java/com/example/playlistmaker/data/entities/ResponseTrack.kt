@@ -1,4 +1,5 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.data.entities
+
 
 data class ResponseTrack(
     val resultCount: Int,

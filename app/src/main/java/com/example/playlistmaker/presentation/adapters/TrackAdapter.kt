@@ -1,12 +1,15 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.data.SharedPreferenceConverter
+import com.example.playlistmaker.presentation.adapters.view_holder.TrackViewHolder
+import com.example.playlistmaker.data.entities.Track
+import com.example.playlistmaker.databinding.ItemTrackListBinding
+import com.example.playlistmaker.util.ObjectCollection.intentView
 
 
 class TrackAdapter(
@@ -17,12 +20,12 @@ class TrackAdapter(
 
     private var listTrack: List<Track> = emptyList()
     private val newTrack = "new_track"
-    private val sharedPreferenceConverter = SharedPreferenceConverter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_track_list, parent, false)
-        return TrackViewHolder(view, context)
+        val binding = ItemTrackListBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+
+        return TrackViewHolder(context, binding)
     }
 
     override fun getItemCount(): Int {
@@ -35,11 +38,7 @@ class TrackAdapter(
         holder.itemView.setOnClickListener {
             write(item)
             holder.bind(item)
-            val itemJson = SharedPreferenceConverter.createJsonFromTrack(item)
-            val intent = Intent(context, MediaActivity::class.java)
-            intent.putExtra(Constant.KEY, itemJson)
-            context.startActivity(intent)
-            Log.d("mes", itemJson)
+            intentView.sendData(context, item)
         }
     }
 
@@ -55,8 +54,7 @@ class TrackAdapter(
 
     private fun write(track: Track) {
         pref.edit()
-            .putString(newTrack, sharedPreferenceConverter.createJsonFromTrack(track))
+            .putString(newTrack, SharedPreferenceConverter.createJsonFromTrack(track))
             .apply()
-        Log.d("write", track.toString())
     }
 }

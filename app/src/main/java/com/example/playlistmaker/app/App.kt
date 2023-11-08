@@ -1,12 +1,9 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.app
 
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 
-
-private const val KEY_PREF = "pref"
-private const val KEY_VALUE = "key_value"
 
 class App : Application() {
     private var darkTheme = false
@@ -42,5 +39,9 @@ class App : Application() {
         val editor = creatingPref().edit()
         editor.putBoolean(KEY_VALUE, darkTheme)
         editor.apply()
+    }
+    companion object{
+        private const val KEY_PREF = "pref"
+        private const val KEY_VALUE = "key_value"
     }
 }

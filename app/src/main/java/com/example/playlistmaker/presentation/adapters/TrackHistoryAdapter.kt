@@ -1,11 +1,13 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.adapters
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.presentation.adapters.view_holder.TrackViewHolder
+import com.example.playlistmaker.data.entities.Track
+import com.example.playlistmaker.databinding.ItemTrackListBinding
+import com.example.playlistmaker.presentation.helpers.IntentWorkPlace
 
 class TrackHistoryAdapter(private val context: Context) : RecyclerView.Adapter<TrackViewHolder>() {
 
@@ -13,9 +15,10 @@ class TrackHistoryAdapter(private val context: Context) : RecyclerView.Adapter<T
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_track_list, parent, false)
-        return TrackViewHolder(view, context)
+        val binding = ItemTrackListBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+
+        return TrackViewHolder(context, binding)
     }
 
     override fun getItemCount(): Int = list.size
@@ -25,11 +28,8 @@ class TrackHistoryAdapter(private val context: Context) : RecyclerView.Adapter<T
 
         holder.bind(item)
         holder.itemView.setOnClickListener {
-            val itemJson = SharedPreferenceConverter.createJsonFromTrack(item)
-            val intent = Intent(context, MediaActivity::class.java)
-            intent.putExtra(Constant.KEY, itemJson)
-            context.startActivity(intent)
-            Log.d("mes", itemJson)
+            val intent = IntentWorkPlace
+            intent.sendData(context,item)
         }
     }
 

@@ -1,7 +1,6 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.helpers
 
 import android.content.Context
-import android.util.Log
 import android.util.TypedValue
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -9,20 +8,21 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-
-private const val radiusCorners = 2.0f
+import com.example.playlistmaker.R
+import com.example.playlistmaker.data.entities.Track
+import com.example.playlistmaker.util.ObjectCollection.formatedData
 
 object ImageWorkPlace {
-    fun getRecomendationImage(context: Context,bigSize:Boolean,view: ImageView,item:Track){
+    private const val radiusCorners = 2.0f
+    fun getRecomendationImage(context: Context, bigSize:Boolean, view: ImageView, item: Track){
 
         Glide.with(context)
             .applyDefaultRequestOptions(getRequestOptions(bigSize))
-            .load(item.getImageNeedSize())
+            .load(formatedData.getImageNeedSize(item))
             .transform(CenterCrop(), RoundedCorners(dpToPx(radiusCorners, context)))
             .into(view)
-        Log.d("mes",item.getImageNeedSize())
     }
-    private fun getRequestOptions(bigSize:Boolean) : RequestOptions{
+    private fun getRequestOptions(bigSize:Boolean) : RequestOptions {
         return if(bigSize){
             RequestOptions()
                 .placeholder(R.drawable.placeholder)

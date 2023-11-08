@@ -1,8 +1,6 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.data.entities
 
 import com.google.gson.annotations.SerializedName
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 data class Track(
     @SerializedName("trackName") val trackName: String,
@@ -15,13 +13,4 @@ data class Track(
     @SerializedName("releaseDate") val releaseDate: String,
     @SerializedName("previewUrl") val previewUrl:String
 
-) {
-    fun getFormattedTrackTime(): String {
-        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
-    }
-
-    fun getYearFormReleaseDate(): String = releaseDate.substring(0, 4)
-
-    fun getImageNeedSize(): String = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
-
-}
+)
