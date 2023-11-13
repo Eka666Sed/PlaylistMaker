@@ -1,24 +1,18 @@
 package com.example.playlistmaker.data.web_action
 
-import android.content.Context
-import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.R
-import com.example.playlistmaker.data.SharedPreferenceWorkPlace
 import com.example.playlistmaker.data.TrackApiService
 import com.example.playlistmaker.data.entities.ResponseTrack
 import com.example.playlistmaker.data.entities.Track
-import com.example.playlistmaker.databinding.ActivitySearchBinding
-import com.example.playlistmaker.presentation.adapters.TrackAdapter
 import com.example.playlistmaker.presentation.adapters.TrackHistoryAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-object WebWorkPlace {
+class Repository {
+    var responseApi: Response<ResponseTrack>? = null
 
-    fun getWebRequest(binding: ActivitySearchBinding, context: Context) {
-        val query = binding.editTextSearch.text.toString().trim()
+    fun getWebRequest(query:String){
+        //val query = binding.editTextSearch.text.toString().trim()
         if (query.isNotEmpty()) {
             val apiService = TrackApiService.create
             apiService.search(query).enqueue(object : Callback<ResponseTrack> {
@@ -26,28 +20,30 @@ object WebWorkPlace {
                     call: Call<ResponseTrack>,
                     response: Response<ResponseTrack>
                 ) {
-                    handleResponse(response,binding,context)
-                    binding.progressBar.visibility = View.GONE
+                    /*handleResponse(response*//*,binding,context*//*)*/
+                    //binding.progressBar.visibility = View.GONE
+                    responseApi = response
                 }
 
                 override fun onFailure(call: Call<ResponseTrack>, t: Throwable) {
-                    handleFailure(binding,context)
-                    binding.progressBar.visibility = View.GONE
+                    /*handleFailure(*//*binding,context*//*)*/
+                    //binding.progressBar.visibility = View.GONE
                 }
             })
         }
     }
 
 
-    private fun handleResponse(
+
+    fun handleResponse(
         response: Response<ResponseTrack>,
-        binding: ActivitySearchBinding,
-        context: Context
-    ) {
+        /*binding: ActivitySearchBinding,
+        context: Context*/
+    ) : Response<ResponseTrack> {
         val trackList = response.body()?.results ?: emptyList()
 
         if (response.isSuccessful && trackList.isNotEmpty()) {
-            binding.apply {
+            /*binding.apply {
                 trackRecyclerView.visibility = View.VISIBLE
                 ivMessage.visibility = View.INVISIBLE
                 btnMessage.visibility = View.INVISIBLE
@@ -55,13 +51,13 @@ object WebWorkPlace {
                 binding.editTextSearch.visibility = View.VISIBLE
             }
 
-            val trackAdapter = TrackAdapter(context, SharedPreferenceWorkPlace.getSharedPreferences(context))
+            val trackAdapter = TrackAdapter(context, useCase.getSharedPreferences())
             binding.trackRecyclerView.layoutManager = LinearLayoutManager(context)
             binding.trackRecyclerView.adapter = trackAdapter
-            trackAdapter.updateData(trackList)
+            trackAdapter.updateData(trackList)*/
 
         } else {
-            binding.apply {
+            /*binding.apply {
                 trackRecyclerView.visibility = View.INVISIBLE
                 ivMessage.visibility = View.VISIBLE
                 tvMessage.visibility = View.VISIBLE
@@ -78,13 +74,15 @@ object WebWorkPlace {
                 binding.ivMessage.setImageResource(
                     R.drawable.no_content
                 )
-            }
+            }*/
         }
+        //binding.progressBar.visibility = View.GONE
+        return response
     }
 
 
-    private fun handleFailure(binding: ActivitySearchBinding, context: Context) {
-        binding.apply {
+    fun handleFailure(/*binding: ActivitySearchBinding, context: Context*/) {
+        /*binding.apply {
             trackRecyclerView.visibility = View.INVISIBLE
             ivMessage.visibility = View.VISIBLE
             tvMessage.visibility = View.VISIBLE
@@ -93,7 +91,8 @@ object WebWorkPlace {
             ivMessage.setImageResource(
                 R.drawable.no_web
             )
-        }
+        }*/
+        //binding.progressBar.visibility = View.GONE
     }
 
     fun showHistoryRequest(trackAdapter: TrackHistoryAdapter, listTrack: MutableList<Track>) {

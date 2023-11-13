@@ -11,9 +11,9 @@ object FormatedData {
         )
     }
 
-    fun getYearFormReleaseDate(track: Track): String = track.releaseDate.substring(0, 4)
+    fun Track.getYearFromReleaseDate(): String = this.releaseDate.substring(0, 4)
 
-    fun getImageNeedSize(track: Track): String = track
+    fun Track.getImageNeedSize(): String = this
         .artworkUrl100
         .replaceAfterLast('/', "512x512bb.jpg")
 }

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.R
 import com.example.playlistmaker.app.App
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import com.example.playlistmaker.presentation.ThemeDataSource
 import com.example.playlistmaker.util.ObjectCollection.intentView
 
 class SettingsActivity : AppCompatActivity() {
@@ -23,9 +24,10 @@ class SettingsActivity : AppCompatActivity() {
     private fun setUpToolbar() = binding?.toolbarSettings?.setNavigationOnClickListener { onBackPressed() }
 
     private fun toggleTheme(checked:Boolean) {
+        val theme = ThemeDataSource
         (applicationContext as App).apply {
-            switchTheme(checked)
-            saveData(checked)
+            theme.switchTheme(checked)
+            theme.saveData(checked,this)
         }
     }
     private fun checkTheme(){

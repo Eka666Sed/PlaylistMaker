@@ -1,9 +1,10 @@
 package com.example.playlistmaker.presentation.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.playlistmaker.databinding.ActivityMainBinding
-import com.example.playlistmaker.util.ObjectCollection
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,14 +18,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpButtonListeners() {
+
         binding?.buttonSearch?.setOnClickListener {
-            ObjectCollection.intentView.navigateToActivity(this, SearchActivity())
+            startActivity(Intent(this@MainActivity, SearchActivity()::class.java))
         }
         binding?.buttonMedia?.setOnClickListener {
-            ObjectCollection.intentView.navigateToActivity(this, MediaActivity())
+            startActivity(Intent(this@MainActivity, MediaActivity()::class.java))
         }
         binding?.buttonSettings?.setOnClickListener {
-            ObjectCollection.intentView.navigateToActivity(this, SettingsActivity())
+            startActivity(Intent(this@MainActivity, SettingsActivity()::class.java))
         }
     }
 }

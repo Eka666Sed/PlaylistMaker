@@ -10,7 +10,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.entities.Track
-import com.example.playlistmaker.util.ObjectCollection.formatedData
 
 object ImageWorkPlace {
     private const val radiusCorners = 2.0f
@@ -18,7 +17,7 @@ object ImageWorkPlace {
 
         Glide.with(context)
             .applyDefaultRequestOptions(getRequestOptions(bigSize))
-            .load(formatedData.getImageNeedSize(item))
+            .load(item.artworkUrl100)
             .transform(CenterCrop(), RoundedCorners(dpToPx(radiusCorners, context)))
             .into(view)
     }

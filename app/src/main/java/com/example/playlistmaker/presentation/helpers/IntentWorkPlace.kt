@@ -11,10 +11,6 @@ import com.example.playlistmaker.presentation.activity.MediaActivity
 import com.example.playlistmaker.util.Constant
 
 object IntentWorkPlace {
-    fun navigateToActivity(context: Context, activity: AppCompatActivity){
-        val intent = Intent(context, activity::class.java)
-        context.startActivity(intent)
-    }
 
     fun shareText(context: Context, text: String) {
         val sendIntent = Intent().apply {

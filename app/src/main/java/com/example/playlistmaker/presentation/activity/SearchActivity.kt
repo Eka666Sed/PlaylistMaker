@@ -7,16 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.presentation.adapters.TrackHistoryAdapter
 import com.example.playlistmaker.data.SharedPreferenceConverter
-import com.example.playlistmaker.data.SharedPreferenceWorkPlace
-import com.example.playlistmaker.data.SharedPreferenceWorkPlace.clearSharedPreference
+import com.example.playlistmaker.data.SharedPreferencesDataSource
 import com.example.playlistmaker.data.entities.Track
-import com.example.playlistmaker.data.web_action.WebWorkPlace.showHistoryRequest
+import com.example.playlistmaker.data.web_action.Repository
 import com.example.playlistmaker.databinding.ActivitySearchBinding
-import com.example.playlistmaker.presentation.helpers.ActionsAdapterWorkPlace.showAdapterHistory
-import com.example.playlistmaker.presentation.helpers.ViewActionsWorkPlace.searchButton
-import com.example.playlistmaker.presentation.helpers.ViewActionsWorkPlace.textWatcher
-import com.example.playlistmaker.presentation.helpers.ViewActionsWorkPlace.updateData
-import com.example.playlistmaker.util.ObjectCollection.view
+import com.example.playlistmaker.domain.GetSharedPreferenceActionUseCase
+import com.example.playlistmaker.domain.GetWebDataUseCase
+import com.example.playlistmaker.presentation.helpers.ActionsAdapterWorkPlace
+import com.example.playlistmaker.presentation.helpers.ViewActionsWorkPlace
 
 class SearchActivity : AppCompatActivity() {
     private var savedText: String = ""
@@ -25,7 +23,10 @@ class SearchActivity : AppCompatActivity() {
     private var listTrack = mutableListOf<Track>()
     private lateinit var prefData: SharedPreferences
     private val trackAdapter = TrackHistoryAdapter(this@SearchActivity)
-
+    private val useCase = GetSharedPreferenceActionUseCase(SharedPreferencesDataSource(this@SearchActivity))
+    private val useCaseWeb = GetWebDataUseCase(Repository(/*this@SearchActivity*/))
+    private val adapterAction = ActionsAdapterWorkPlace(useCase)
+    private val useCaseView = ViewActionsWorkPlace(adapterAction,useCaseWeb)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +42,7 @@ class SearchActivity : AppCompatActivity() {
         }
         binding?.editTextSearch?.setOnFocusChangeListener { _, hasFocus ->
             if ((hasFocus) && (trackAdapter.itemCount > 0)) {
-                view.showButtonClear(true,binding!!,this,trackAdapter)
+                useCaseView.showButtonClear(true,binding!!,this,trackAdapter)
             }
         }
     }
@@ -49,19 +50,31 @@ class SearchActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         getDataTrack()
-        showAdapterHistory(trackAdapter,listTrack)
+        adapterAction.showAdapterHistory(trackAdapter,listTrack)
         getDataForTrack()
         prefData.registerOnSharedPreferenceChangeListener(listener)
-        showHistoryRequest(trackAdapter,listTrack)
-        searchButton(binding!!,this,trackAdapter)
-        updateData(binding!!,this)
-        clearSharedPreference(binding!!,trackAdapter,listTrack,this)
-        textWatcher(binding!!,this,trackAdapter,listTrack)
+        useCaseWeb.showHistoryRequest(trackAdapter,listTrack)
+        useCaseView.searchButton(binding!!,this,trackAdapter,binding!!.editTextSearch.text.toString().trim())
+        useCaseView.updateData(binding!!,this,binding!!.editTextSearch.text.toString().trim())
+        clearSharedPreference()
+        useCaseView.textWatcher(binding!!,this,trackAdapter,listTrack,binding!!.editTextSearch.text.toString().trim())
+    }
+
+    fun clearSharedPreference(){
+        //clearSharedPreference(this)
+        useCase.clearSharedPreference()
+        binding?.btnClearHistory?.setOnClickListener {
+            //SharedPreferencesDataSource.getSharedPreferences(this).edit().clear().apply()
+            useCase.clearSharedPreference()
+            trackAdapter.clearListAdapter()
+            listTrack.clear()
+            useCaseView.showButtonClear(false, binding!!, this, trackAdapter)
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        SharedPreferenceWorkPlace.saveDataTrack(prefData, listTrack, MAIN_KEY)
+        SharedPreferencesDataSource(this).saveDataTrack(prefData, listTrack, MAIN_KEY)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

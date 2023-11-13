@@ -1,18 +1,23 @@
 package com.example.playlistmaker.presentation.activity
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.DataSource
 import com.example.playlistmaker.data.SharedPreferenceConverter
+import com.example.playlistmaker.data.entities.Track
 import com.example.playlistmaker.databinding.ActivityMediaBinding
+import com.example.playlistmaker.databinding.ItemTrackListBinding
 import com.example.playlistmaker.presentation.MediaPlayer.playerState
 import com.example.playlistmaker.util.Constant
 import com.example.playlistmaker.util.ObjectCollection
+import com.example.playlistmaker.util.ObjectCollection.formatedData
+import com.example.playlistmaker.util.ObjectCollection.image
 import com.example.playlistmaker.util.ObjectCollection.mediaPlayerAction
 import com.example.playlistmaker.util.State
 import java.text.SimpleDateFormat
@@ -77,7 +82,7 @@ class MediaActivity : AppCompatActivity() {
         super.onPause()
         mediaPlayer?.let { player ->
             binding?.let { bind ->
-                ObjectCollection.mediaPlayerAction.pausePlayer(player, bind)
+                mediaPlayerAction.pausePlayer(player, bind)
             }
         }
     }
@@ -104,7 +109,7 @@ class MediaActivity : AppCompatActivity() {
             binding?.ibPlay?.setImageResource(R.drawable.button_play)
             playerState = State.PREPARED
         }
-        DataSource.setValueForMediaActivity(binding!!, this, item)
+        setValueForMediaActivity(this, item)
     }
 
     private fun exitForTrack(){
@@ -112,6 +117,27 @@ class MediaActivity : AppCompatActivity() {
         mediaPlayer = null
     }
 
+    private fun setValueForMediaActivity(context: Context, item: Track) {
+        binding?.tvArtistName?.text = item.artistName
+        binding?.tvTrackName?.text = item.trackName
+        if (item.collectionName.isNotEmpty()) binding?.tvAlbumValue?.text = item.collectionName
+        else {
+            binding?.tvAlbumValue?.isVisible = false
+            binding?.tvAlbum?.isVisible = false
+        }
+        binding?.tvCountryValue?.text = item.country
+        binding?.tvYearValue?.text = item.releaseDate
+        binding?.tvDurationValue?.text = formatedData.getFormattedTrackTime(item).replaceFirst("0", "")
+        binding?.tvGenreValue?.text = item.primaryGenreName
+        image.getRecomendationImage(context, true, binding!!.ivMain, item)
+    }
+
+    private fun setValueForViewHolder(binding: ItemTrackListBinding, track: Track, context: Context){
+        binding.tvArtistName.text = track.artistName
+        binding.tvTrackName.text = track.trackName
+        binding.tvTrackTime.text = formatedData.getFormattedTrackTime(track)
+        image.getRecomendationImage(context, false, binding.artworkUrl100, track)
+    }
 
     companion object {
         private const val START_TRACK_VALUE = "00:00"
