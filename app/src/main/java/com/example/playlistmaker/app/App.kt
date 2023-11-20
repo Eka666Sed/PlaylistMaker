@@ -1,7 +1,7 @@
 package com.example.playlistmaker.app
 
 import android.app.Application
-import com.example.playlistmaker.presentation.ThemeDataSource
+import com.example.playlistmaker.app.utils.ThemeDataSource
 
 
 class App : Application() {

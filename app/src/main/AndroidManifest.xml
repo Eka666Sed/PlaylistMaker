@@ -17,13 +17,13 @@
         android:theme="@style/Base.Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.activity.SearchActivity"
+            android:name=".presentation.ui.tracks.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.activity.MediaActivity"
+            android:name=".presentation.ui.media.MediaActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.activity.MainActivity"
+            android:name=".presentation.ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,8 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.activity.SettingsActivity"
+            android:name=".presentation.ui.settings.SettingsActivity"
             android:exported="false" />
     </application>
-
 </manifest>
