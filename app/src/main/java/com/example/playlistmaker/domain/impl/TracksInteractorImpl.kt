@@ -14,5 +14,4 @@ class TracksInteractorImpl(private val repository: TracksRepository) : TracksInt
         }
     }
 
-    override fun getRequestStatus() = repository.getRequestStatus()
 }

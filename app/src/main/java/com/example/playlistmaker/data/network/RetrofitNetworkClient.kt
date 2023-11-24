@@ -12,13 +12,17 @@ class RetrofitNetworkClient : NetworkClient {
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    val create: ApiCollection = retrofit.create(ApiCollection::class.java)
+    private val create: ApiCollection = retrofit.create(ApiCollection::class.java)
 
     override fun doRequest(dto: Any): Response {
         if (dto is TracksSearchRequest) {
-            val resp = create.search(dto.text).execute()
-            val body = resp.body() ?: Response()
-            return body.apply { resultCode = resp.code() }
+            try {
+                val resp = create.search(dto.text).execute()
+                val body = resp.body() ?: Response()
+                return body.apply { resultCode = resp.code() }
+            } catch (e: Throwable) {
+                return Response().apply{ resultCode = -1 }
+            }
         } else {
             return Response().apply { resultCode = 400 }
         }

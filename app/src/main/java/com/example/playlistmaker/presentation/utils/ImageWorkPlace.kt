@@ -14,7 +14,7 @@ import com.example.playlistmaker.domain.utils.DataFormatter
 
 object ImageWorkPlace {
     private const val radiusCorners = 2.0f
-    fun getRecomendationImage(context: Context, bigSize:Boolean, view: ImageView, item: Track/*Dto*/){
+    fun getRecomendationImage(context: Context, bigSize:Boolean, view: ImageView, item: Track){
 
         Glide.with(context)
             .applyDefaultRequestOptions(getRequestOptions(bigSize))

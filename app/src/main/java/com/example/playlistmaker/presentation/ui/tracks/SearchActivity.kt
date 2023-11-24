@@ -13,12 +13,13 @@ import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.app.utils.DebounceWorkPlace
-import com.example.playlistmaker.data.utils.local_storage.SharedPreferenceConverter
 import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.domain.ConverterCreator
 import com.example.playlistmaker.domain.StorageCreator
 import com.example.playlistmaker.domain.WebCreator
 import com.example.playlistmaker.domain.api.TracksInteractor
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.utils.Resource
 
 private const val NEW_TRACK = "new_track"
 private const val MAIN_KEY = "main_key"
@@ -31,7 +32,7 @@ class SearchActivity : AppCompatActivity() {
     private var listTrack = mutableListOf<Track>()
     private lateinit var prefData: SharedPreferences
     private val trackAdapter = TrackHistoryAdapter(this@SearchActivity)
-    private val searchRunnable = Runnable {searchTracks(binding!!.editTextSearch.text.toString().trim()) }
+    private val searchRunnable = Runnable {searchTracks()}
     private val webCreator = WebCreator.provideTracksInteractor()
     private val storageCreator = StorageCreator.provideStorageInteractor()
 
@@ -53,27 +54,31 @@ class SearchActivity : AppCompatActivity() {
             }
         }
     }
-    fun searchTracks(searchText: String) {
+    private fun searchTracks() {
+        val searchText = binding!!.editTextSearch.text.toString().trim()
         val tracksConsumer = object : TracksInteractor.TracksConsumer {
-            override fun consume(foundTracks: List<Track>) {
+            override fun consume(foundTracks: Resource<List<Track>>) {
                 runOnUiThread {
-                    updateUIWithTracks(foundTracks)
+                    if(foundTracks.data.isNullOrEmpty() && foundTracks.message == "Проверьте подключение к интернету"){
+                        handleFailure()
+                        binding?.progressBar?.visibility = View.GONE
+
+                    }
+                    else if(foundTracks.data.isNullOrEmpty() && foundTracks.message == "Ошибка сервера"){
+                        handleResponse(foundTracks)
+                        binding?.progressBar?.visibility = View.GONE
+                    }
+                    else{
+                        handleResponse(foundTracks)
+                        binding?.progressBar?.visibility = View.GONE
+                    }
                 }
             }
         }
-        try{
-            webCreator.searchTracks(searchText, tracksConsumer)
-        }catch (e:Exception){
-            handleFailure()
-        }
+        webCreator.searchTracks(searchText, tracksConsumer)
 
     }
 
-    private fun updateUIWithTracks(tracks: List<Track>) {
-        binding?.progressBar?.visibility = View.GONE
-        if(webCreator.getRequestStatus().resultCode == 200){ handleResponse(tracks) }
-        else { handleFailure() }
-    }
 
     override fun onStart() {
         super.onStart()
@@ -106,7 +111,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun getDataTrack() {
-        val sharedPreferencesConverter = SharedPreferenceConverter
+        val sharedPreferencesConverter = ConverterCreator.sharedPreferenceConverter()
         val tracks = prefData.getString(MAIN_KEY, null)
         if (tracks != null) {
             listTrack = sharedPreferencesConverter.createTracksListFromJson(tracks).toMutableList()
@@ -192,7 +197,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun updateData() {
-        binding?.btnMessage?.setOnClickListener {searchTracks(binding!!.editTextSearch.text.toString().trim())}
+        binding?.btnMessage?.setOnClickListener {searchTracks()}
     }
 
     private fun searchButton() {
@@ -202,14 +207,14 @@ class SearchActivity : AppCompatActivity() {
                 binding?.btnClearHistory?.visibility = View.INVISIBLE
                 binding?.tvHint?.visibility = View.GONE
                 clearAdapter()
-                searchTracks(binding!!.editTextSearch.text.toString().trim())
+                searchTracks()
             }
             return@setOnEditorActionListener false
         }
     }
 
-    private fun handleResponse(tracks: List<Track>) {
-        if (webCreator.getRequestStatus().resultCode == 200 && tracks.isNotEmpty()) {
+    private fun handleResponse(tracks: Resource<List<Track>>) {
+        if (tracks.data!!.isNotEmpty()) {
             binding?.apply {
                 trackRecyclerView.visibility = View.VISIBLE
                 ivMessage.visibility = View.INVISIBLE
@@ -221,7 +226,7 @@ class SearchActivity : AppCompatActivity() {
             val trackAdapter = TrackAdapter(this@SearchActivity, prefData)
             binding?.trackRecyclerView?.layoutManager = LinearLayoutManager(this@SearchActivity)
             binding?.trackRecyclerView?.adapter = trackAdapter
-            trackAdapter.updateData(tracks)
+            trackAdapter.updateData(tracks.data!!)
 
         } else {
             binding?.apply {
@@ -231,7 +236,7 @@ class SearchActivity : AppCompatActivity() {
                 btnMessage.visibility = View.INVISIBLE
             }
 
-            if (webCreator.getRequestStatus().resultCode == 200) {
+            if (tracks.data.isEmpty()) {
                 binding?.tvMessage?.text = getString(R.string.no_content)
                 binding?.ivMessage?.setImageResource(
                     R.drawable.no_content
@@ -272,9 +277,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun getDataForTrack() {
-        val sharedPreferenceConverter = SharedPreferenceConverter
         fun addTrack(track: String) {
-            val createTrack = sharedPreferenceConverter.createTrackFromJson(track)
+            val createTrack = ConverterCreator.sharedPreferenceConverter().createTrackFromJson(track)
             if (listTrack.contains(createTrack)) {
                 listTrack.remove(createTrack)
             }

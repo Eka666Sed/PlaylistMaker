@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.playlistmaker.R
 import com.example.playlistmaker.app.utils.Constant
-import com.example.playlistmaker.data.utils.local_storage.SharedPreferenceConverter
 import com.example.playlistmaker.databinding.ActivityMediaBinding
+import com.example.playlistmaker.domain.ConverterCreator
 import com.example.playlistmaker.domain.MediaCreator
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.utils.DataFormatter
@@ -96,7 +96,7 @@ class MediaActivity : AppCompatActivity() {
     }
 
     private fun setDataForView(data: String) {
-        val item = SharedPreferenceConverter.createTrackFromJson(data)
+        val item = ConverterCreator.sharedPreferenceConverter().createTrackFromJson(data)
         mediaUri = Uri.parse(item.previewUrl)
         mediaPlayer = MediaPlayer()
         mediaPlayer?.setDataSource(applicationContext, mediaUri!!)

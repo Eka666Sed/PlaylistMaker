@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import com.example.playlistmaker.R
 import com.example.playlistmaker.app.utils.Constant
-import com.example.playlistmaker.data.utils.local_storage.SharedPreferenceConverter
+import com.example.playlistmaker.domain.ConverterCreator
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.ui.media.MediaActivity
 
@@ -40,8 +40,8 @@ object IntentWorkPlace {
         context.startActivity(intent)
     }
 
-    fun sendData(context: Context, item: Track/*Dto*/){
-        val itemJson = SharedPreferenceConverter.createJsonFromTrack(item)
+    fun sendData(context: Context, item: Track){
+        val itemJson = ConverterCreator.sharedPreferenceConverter().createJsonFromTrack(item)
         val intent = Intent(context, MediaActivity::class.java)
         intent.putExtra(Constant.KEY, itemJson)
         context.startActivity(intent)

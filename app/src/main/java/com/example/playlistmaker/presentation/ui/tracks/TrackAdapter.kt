@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.app.utils.DebounceWorkPlace
-import com.example.playlistmaker.data.utils.local_storage.SharedPreferenceConverter
 import com.example.playlistmaker.databinding.ItemTrackListBinding
+import com.example.playlistmaker.domain.ConverterCreator
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.ui.tracks.view_holder.TrackViewHolder
 import com.example.playlistmaker.presentation.utils.IntentWorkPlace
@@ -19,7 +19,7 @@ class TrackAdapter(
 ) :
     RecyclerView.Adapter<TrackViewHolder>() {
 
-    private var listTrack: List<Track/*Dto*/> = emptyList()
+    private var listTrack: List<Track> = emptyList()
     private val newTrack = "new_track"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
@@ -44,7 +44,7 @@ class TrackAdapter(
         }
     }
 
-    fun updateData(newListTrack: List<Track/*Dto*/>) {
+    fun updateData(newListTrack: List<Track>) {
         listTrack = newListTrack
         notifyDataSetChanged()
     }
@@ -54,9 +54,9 @@ class TrackAdapter(
         notifyDataSetChanged()
     }
 
-    private fun write(track: Track/*Dto*/) {
+    private fun write(track: Track) {
         pref.edit()
-            .putString(newTrack, SharedPreferenceConverter.createJsonFromTrack(track))
+            .putString(newTrack, ConverterCreator.sharedPreferenceConverter().createJsonFromTrack(track))
             .apply()
     }
 }

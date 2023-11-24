@@ -3,7 +3,7 @@ package com.example.playlistmaker.data
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.data.utils.local_storage.SharedPreferenceConverter
+import com.example.playlistmaker.domain.ConverterCreator
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.storage.StorageRepository
 
@@ -11,7 +11,7 @@ class StorageRepositoryImpl : StorageRepository {
 
     override fun saveDataTrack(context: Context, listTrack: MutableList<Track>, mainKey: String) {
         getSharedPreferences(context).edit()
-            .putString(mainKey, SharedPreferenceConverter.createJsonFromTracksList(listTrack))
+            .putString(mainKey, ConverterCreator.sharedPreferenceConverter().createJsonFromTracksList(listTrack))
             .apply()
     }
 
