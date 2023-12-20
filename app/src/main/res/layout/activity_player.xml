@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.player.PlayerActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarMedia"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineLeft"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:titleTextColor="@color/colorTextToolbarSearch" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineRight"
+        app:layout_constraintGuide_begin="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMedia" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineLeft" />
+
+    <ImageView
+        android:id="@+id/iv_main"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/placeholder"
+        app:layout_constraintBottom_toTopOf="@+id/tv_track_name"
+        app:layout_constraintDimensionRatio="h,16:16"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMedia" />
+
+    <TextView
+        android:id="@+id/tv_track_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/track_name"
+        android:textColor="@color/colorText"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tv_artist_name"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft" />
+
+    <TextView
+        android:id="@+id/tv_artist_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/artist_name"
+        android:textColor="@color/colorText"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/ib_play"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_track_name" />
+
+    <ImageView
+        android:id="@+id/ib_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/button_play"
+        app:layout_constraintBottom_toTopOf="@+id/tv_time_track"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft" />
+
+    <ImageView
+        android:id="@+id/ib_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/add"
+        app:layout_constraintBottom_toBottomOf="@+id/ib_play"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+        app:layout_constraintTop_toTopOf="@+id/ib_play" />
+
+
+    <ImageView
+        android:id="@+id/ib_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/like"
+        app:layout_constraintBottom_toBottomOf="@+id/ib_play"
+        app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
+        app:layout_constraintTop_toTopOf="@+id/ib_play" />
+
+    <TextView
+        android:id="@+id/tv_time_track"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/start_track_time"
+        android:textColor="@color/colorText"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvDuration"
+        app:layout_constraintEnd_toEndOf="@+id/ib_play"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="@+id/ib_play" />
+
+    <TextView
+        android:id="@+id/tvCountry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:text="@string/country"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvGenre"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <TextView
+        android:id="@+id/tvGenre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="17dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:text="@string/genre"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvCountry"
+        app:layout_constraintStart_toStartOf="@+id/tvYear" />
+
+    <TextView
+        android:id="@+id/tvYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="17dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:text="@string/year"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvGenre"
+        app:layout_constraintStart_toStartOf="@+id/tvAlbum" />
+
+    <TextView
+        android:id="@+id/tvAlbum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="17dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:text="@string/album"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvYear"
+        app:layout_constraintStart_toStartOf="@+id/tvDuration" />
+
+    <TextView
+        android:id="@+id/tvDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="17dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:text="@string/duration"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvAlbum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <TextView
+        android:id="@+id/tvCountryValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:text="@string/country"
+        android:textColor="@color/colorText"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvGenreValue" />
+
+    <TextView
+        android:id="@+id/tvGenreValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="17dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:text="@string/genre"
+        android:textColor="@color/colorText"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvCountryValue"
+        app:layout_constraintEnd_toEndOf="@+id/tvYearValue" />
+
+    <TextView
+        android:id="@+id/tvYearValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="17dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:text="@string/year"
+        android:textColor="@color/colorText"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvGenreValue"
+        app:layout_constraintEnd_toEndOf="@+id/tvAlbumValue" />
+
+    <TextView
+        android:id="@+id/tvAlbumValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="17dp"
+        android:ellipsize="end"
+        android:maxWidth="300dp"
+        android:maxLines="1"
+        android:fontFamily="@font/ys_display_regular"
+        android:text="@string/album"
+        android:textColor="@color/colorText"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvYearValue"
+        app:layout_constraintEnd_toEndOf="@+id/tvDurationValue" />
+
+    <TextView
+        android:id="@+id/tvDurationValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="17dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:text="@string/duration"
+        android:textColor="@color/colorText"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvAlbumValue"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

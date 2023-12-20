@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.ui.tracks.SearchActivity">
+    tools:context=".ui.search.SearchActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarSettings"
@@ -49,6 +49,7 @@
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:src="@drawable/ic_clear"
+            android:visibility="gone"
             tools:ignore="SpeakableTextPresentCheck" />
     </FrameLayout>
 
@@ -57,17 +58,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:visibility="visible">
 
                 <TextView
-                    android:id="@+id/tv_hint"
+                    android:id="@+id/tv_you_searched"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|top"
@@ -79,23 +78,30 @@
                     android:text="@string/hint"
                     android:textSize="19sp"
                     android:textColor="@color/colorText"
-                    android:visibility="invisible" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/track_recycler_view"
+                    android:id="@+id/track_history_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginTop="12dp"
-                    android:visibility="invisible">
-
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_marginBottom="16dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@id/btn_clear_history"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_you_searched"
+                    tools:itemCount="41"
+                    tools:listitem="@layout/item_track_list" />
 
                 <Button
                     android:id="@+id/btn_clear_history"
                     android:layout_width="180dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center|bottom"
-                    android:layout_marginBottom="190dp"
+                    android:layout_marginBottom="16dp"
                     android:background="@drawable/custom_support"
                     android:fontFamily="@font/ys_display_medium"
                     android:lineHeight="16dp"
@@ -104,17 +110,30 @@
                     android:text="@string/history_clear"
                     android:textAllCaps="false"
                     android:textSize="14sp"
-                    android:visibility="invisible" />
-            </LinearLayout>
-        </ScrollView>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/track_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:visibility="gone"/>
 
         <LinearLayout
+            android:id="@+id/layout_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="top"
             android:gravity="center"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="50dp"
+            tools:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_message"
@@ -123,13 +142,6 @@
                 app:srcCompat="@drawable/no_content"
                 android:visibility="invisible" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_gravity="center"
-                android:indeterminateTint="@color/blue"
-                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_message"
@@ -144,7 +156,6 @@
                 android:textSize="16sp"
                 android:padding="4dp"
                 android:textColor="@color/colorText"
-                android:visibility="invisible"
                 tools:text="text_view" />
 
             <Button
@@ -157,9 +168,17 @@
                 android:padding="6dp"
                 android:text="@string/update"
                 android:textAllCaps="false"
-                android:textSize="14sp"
-                android:visibility="invisible" />
+                android:textSize="14sp" />
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone"/>
+
     </FrameLayout>
 
 </LinearLayout>
