@@ -1,5 +1,4 @@
-package com.example.playlistmaker.data.player
-
+package com.example.playlistmaker.domain.models
 
 data class Track(
     val trackName: String,
@@ -10,5 +9,5 @@ data class Track(
     val collectionName: String,
     val country: String,
     val releaseDate: String,
-    val previewUrl:String
+    val previewUrl: String
 )
