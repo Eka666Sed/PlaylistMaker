@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.ItemTrackListBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.ui.search.view_holder.TrackViewHolder
-import com.example.playlistmaker.presentation.utils.IntentWorkPlace
 
 class TrackHistoryAdapter(
     private val onTrackClicked: (track: Track) -> Unit

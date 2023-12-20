@@ -6,6 +6,7 @@ import com.example.playlistmaker.data.search.TracksRepository
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.PlayerInteractor
+import com.example.playlistmaker.domain.player.model.PlayerState
 
 class PlayerInteractorImpl(
     private val trackRepository: TracksRepository
