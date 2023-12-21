@@ -38,7 +38,6 @@ class SearchActivity : AppCompatActivity() {
             initTracksRecyclerView()
             initTracksHistoryRecyclerView()
             clearButton.setOnClickListener {
-                editTextSearch.text?.clear()
                 viewModel.onClearButtonClicked()
             }
         }
@@ -67,6 +66,7 @@ class SearchActivity : AppCompatActivity() {
                 }
                 return@setOnEditorActionListener false
             }
+            setOnFocusChangeListener { _, hasFocus -> viewModel.onSearchFocusChanged(hasFocus) }
         }
     }
 
@@ -104,6 +104,7 @@ class SearchActivity : AppCompatActivity() {
                 is SearchScreenEvent.OpenPlayerScreen -> {
                     startActivity(Intent(this, PlayerActivity()::class.java))
                 }
+                is SearchScreenEvent.ClearSearch->binding?.editTextSearch?.text?.clear()
 
                 else -> hideKeyboard()
             }

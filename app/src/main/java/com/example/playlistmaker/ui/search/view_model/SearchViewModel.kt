@@ -62,6 +62,13 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun onSearchFocusChanged(hasFocus: Boolean) {
+        if (hasFocus) {
+            _state.value = getCurrentScreenState()
+                .copy(tracksHistoryVisible = tracksHistory.isNotEmpty())
+        }
+    }
+
     fun onClearHistoryButtonClicked() {
         searchInteractor.clearTrackHistory()
         tracksHistory = searchInteractor.getTracksHistory()
@@ -74,6 +81,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             tracksHistoryVisible = tracksHistory.isNotEmpty(),
         )
         event.value = SearchScreenEvent.HideKeyboard
+        event.value = SearchScreenEvent.ClearSearch
     }
 
     fun onMessageButtonClicked() {
@@ -97,10 +105,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun getTracksHistory() {
         tracksHistory = searchInteractor.getTracksHistory()
-        _state.value = SearchScreenState(
-            tracksHistory = tracksHistory,
-            tracksHistoryVisible = tracksHistory.isNotEmpty()
-        )
+        _state.value = SearchScreenState(tracksHistory = tracksHistory)
     }
 
     private fun searchTracks() {
