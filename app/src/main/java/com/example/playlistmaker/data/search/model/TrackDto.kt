@@ -12,5 +12,4 @@ data class TrackDto(
     @SerializedName("country") val country: String,
     @SerializedName("releaseDate") val releaseDate: String,
     @SerializedName("previewUrl") val previewUrl:String
-
 )

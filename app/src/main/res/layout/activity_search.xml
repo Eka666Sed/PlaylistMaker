@@ -139,8 +139,7 @@
                 android:id="@+id/iv_message"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                app:srcCompat="@drawable/no_content"
-                android:visibility="invisible" />
+                app:srcCompat="@drawable/no_content" />
 
 
             <TextView
