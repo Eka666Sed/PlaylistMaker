@@ -29,7 +29,7 @@
     <string name="country">Страна</string>
     <string name="artist_name">Имя артиста</string>
     <string name="track_name">Название трека</string>
-    <string name="track_time">trackTime</string>
+    <string name="start_track_time">00:00</string>
     <string name="playlist_create">Плэйлист создан</string>
 
 </resources>
