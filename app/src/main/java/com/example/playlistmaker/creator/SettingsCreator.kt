@@ -7,6 +7,7 @@ import com.example.playlistmaker.domain.settings.SettingsInteractor
 import com.example.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 
 object SettingsCreator {
+
     private var settingsInteractor: SettingsInteractorImpl? = null
     private var settingsRepository: SettingsRepository? = null
 

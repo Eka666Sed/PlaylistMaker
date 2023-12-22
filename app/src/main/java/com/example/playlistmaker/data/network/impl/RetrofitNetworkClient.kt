@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitNetworkClient : NetworkClient {
+
     private val BASE_URL = "https://itunes.apple.com/"
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -20,13 +21,14 @@ class RetrofitNetworkClient : NetworkClient {
         return if (dto is TracksSearchRequest) {
             try {
                 val response = api.searchTracks(dto.text).execute()
-                val body = response.body() ?: Response()
-                body.apply { resultCode = response.code() }
+                response.body()?.apply {
+                    resultCode = response.code()
+                } ?: Response(resultCode = response.code())
             } catch (e: Throwable) {
-               Response().apply{ resultCode = -1 }
+                Response(resultCode = -1)
             }
         } else {
-             Response().apply { resultCode = 400 }
+            Response(resultCode = 400)
         }
     }
 }

@@ -5,10 +5,13 @@ import com.example.playlistmaker.creator.SharedPreferencesCreator.createSharedPr
 import com.example.playlistmaker.data.network.impl.RetrofitNetworkClient
 import com.example.playlistmaker.data.search.TracksRepository
 import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
+import com.example.playlistmaker.data.utils.SharedPreferenceConverterImpl
+import com.example.playlistmaker.domain.utils.SharedPreferenceConverter
 
 object TrackRepositoryCreator {
     private var trackRepository: TracksRepositoryImpl? = null
     private var retrofitClient: RetrofitNetworkClient? = null
+    private var sharedPreferencesConverter: SharedPreferenceConverter? = null
 
     fun createTracksRepository(context: Context): TracksRepository {
         return trackRepository ?: TracksRepositoryImpl(
@@ -16,9 +19,15 @@ object TrackRepositoryCreator {
                 retrofitClient = this
             },
             sharedPreferences = createSharedPreferences(context),
-            sharedPreferencesConverter = ConverterCreator.createSharedPreferenceConverter()
+            sharedPreferencesConverter = createSharedPreferenceConverter()
         ).apply {
             trackRepository = this
+        }
+    }
+
+    private fun createSharedPreferenceConverter(): SharedPreferenceConverter {
+        return sharedPreferencesConverter ?: SharedPreferenceConverterImpl().apply {
+            sharedPreferencesConverter = this
         }
     }
 }

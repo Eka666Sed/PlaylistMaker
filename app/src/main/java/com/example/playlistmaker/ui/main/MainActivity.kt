@@ -23,15 +23,14 @@ class MainActivity : AppCompatActivity() {
     private fun setUpButtonListeners() {
         binding?.apply {
             buttonSearch.setOnClickListener {
-                startActivity(Intent(this@MainActivity, SearchActivity()::class.java))
+                startActivity(Intent(this@MainActivity, SearchActivity::class.java))
             }
             buttonMedia.setOnClickListener {
-                startActivity(Intent(this@MainActivity, PlayerActivity()::class.java))
+                startActivity(Intent(this@MainActivity, PlayerActivity::class.java))
             }
             buttonSettings.setOnClickListener {
-                startActivity(Intent(this@MainActivity, SettingsActivity()::class.java))
+                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
             }
         }
-
     }
 }

@@ -7,12 +7,12 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.example.playlistmaker.R
-import com.example.playlistmaker.app.utils.ImageWorkPlace
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.model.PlayerState
 import com.example.playlistmaker.domain.utils.DateFormatter
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
+import com.example.playlistmaker.ui.util.load
 
 class PlayerActivity : AppCompatActivity() {
     private var binding: ActivityPlayerBinding? = null
@@ -79,7 +79,7 @@ class PlayerActivity : AppCompatActivity() {
             tvYearValue.text = DateFormatter.getYearFromReleaseDate(track.releaseDate)
             tvDurationValue.text = DateFormatter.formatMillisToString(track.trackTimeMillis).replaceFirst("0", "")
             tvGenreValue.text = track.primaryGenreName
-            ImageWorkPlace.getRecommendationImage(this@PlayerActivity, ivMain, track.artworkUrl100)
+            ivMain.load(track.artworkUrl100)
         }
     }
 }
