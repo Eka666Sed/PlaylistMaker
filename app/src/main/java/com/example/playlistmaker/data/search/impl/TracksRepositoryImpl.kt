@@ -8,12 +8,12 @@ import com.example.playlistmaker.data.search.model.TracksSearchRequest
 import com.example.playlistmaker.data.search.TracksRepository
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.utils.Resource
-import com.example.playlistmaker.domain.utils.SharedPreferenceConverter
+import com.example.playlistmaker.domain.utils.SharedPreferencesConverter
 
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
     private val sharedPreferences: SharedPreferences,
-    private val sharedPreferencesConverter: SharedPreferenceConverter
+    private val sharedPreferencesConverter: SharedPreferencesConverter
     ) : TracksRepository {
     companion object {
         const val KEY_TRACKS_HISTORY = "key_tracks_history"

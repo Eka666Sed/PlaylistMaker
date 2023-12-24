@@ -2,21 +2,19 @@ package com.example.playlistmaker.ui.settings
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
     private var binding: ActivitySettingsBinding? = null
-    private lateinit var viewModel: SettingsViewModel
+    private  val settingsViewModel: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        viewModel = ViewModelProvider(this).get<SettingsViewModel>()
         setUpToolbar()
         setUpButtons()
         setUpThemeSwitch()
@@ -28,18 +26,18 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setUpButtons() {
         binding?.apply {
-            buttonShareApp.setOnClickListener { viewModel.onShareAppButtonClicked() }
-            buttonWriteSupport.setOnClickListener { viewModel.onWriteSupportButtonClicked() }
-            buttonUserAgreement.setOnClickListener { viewModel.onUserAgreementsButtonClicked() }
+            buttonShareApp.setOnClickListener { settingsViewModel.onShareAppButtonClicked() }
+            buttonWriteSupport.setOnClickListener { settingsViewModel.onWriteSupportButtonClicked() }
+            buttonUserAgreement.setOnClickListener { settingsViewModel.onUserAgreementsButtonClicked() }
         }
     }
 
     private fun setUpThemeSwitch() {
         binding?.themeSwither?.apply {
-            viewModel.applicationTheme.observe(this@SettingsActivity) {
+            settingsViewModel.applicationTheme.observe(this@SettingsActivity) {
                 isChecked = it
             }
-            setOnClickListener { viewModel.onThemeSwitchClicked(this.isChecked) }
+            setOnClickListener { settingsViewModel.onThemeSwitchClicked(this.isChecked) }
         }
     }
 }
