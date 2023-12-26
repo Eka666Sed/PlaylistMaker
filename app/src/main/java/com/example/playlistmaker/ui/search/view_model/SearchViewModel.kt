@@ -1,12 +1,11 @@
 package com.example.playlistmaker.ui.search.view_model
 
-import android.app.Application
+
 import android.os.Handler
 import android.os.Looper
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.playlistmaker.creator.SearchCreator
+import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.search.SearchInteractor
 import com.example.playlistmaker.domain.utils.Resource
@@ -14,14 +13,13 @@ import com.example.playlistmaker.ui.search.SearchScreenEvent
 import com.example.playlistmaker.ui.search.SearchScreenState
 import com.example.playlistmaker.ui.util.SingleLiveEvent
 
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
+class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
-    private val searchInteractor = SearchCreator.createInteractor(application)
 
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { searchTracks() }

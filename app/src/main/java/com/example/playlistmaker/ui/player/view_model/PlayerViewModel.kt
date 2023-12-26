@@ -8,17 +8,20 @@ import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.playlistmaker.creator.PlayerCreator
+import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.PlayerState
 import com.example.playlistmaker.domain.utils.DateFormatter
 import com.example.playlistmaker.ui.player.PlayerScreenEvent
 import com.example.playlistmaker.ui.player.PlayerScreenState
 import com.example.playlistmaker.ui.util.SingleLiveEvent
 
-class PlayerViewModel(application: Application) : AndroidViewModel(application) {
+class PlayerViewModel(
+    playerInteractor: PlayerInteractor,
+    application: Application
+) : AndroidViewModel(application) {
 
     companion object {
-        private const val TIME_STEP = 300L
+        private const val TIME_STEP_MILLIS = 300L
     }
 
     private var mediaPlayer: MediaPlayer = MediaPlayer()
@@ -27,14 +30,14 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         override fun run() {
             val time = DateFormatter.formatMillisToString(mediaPlayer.currentPosition.toLong())
             if (getCurrentScreenState().playerState == PlayerState.PLAYING) {
-                handler.postDelayed(this, TIME_STEP)
+                handler.postDelayed(this, TIME_STEP_MILLIS)
                 _state.postValue(PlayerScreenState(PlayerState.PLAYING, track, time))
             } else {
                 pausePlayer()
             }
         }
     }
-    private val playerInteractor = PlayerCreator.providePlayerInteractor(application)
+
     private val track = playerInteractor.getTrackForPlaying()
 
     private val _state = MutableLiveData<PlayerScreenState>()
