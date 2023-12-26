@@ -17,8 +17,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchActivity : AppCompatActivity() {
     private var binding: ActivitySearchBinding? = null
     private  val searchViewModel: SearchViewModel by viewModel()
-    private lateinit var trackHistoryAdapter: TrackHistoryAdapter
-    private lateinit var trackAdapter: TrackAdapter
+    private var trackHistoryAdapter: TrackHistoryAdapter? = null
+    private var trackAdapter: TrackAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,15 +29,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        binding?.apply {
+        binding?.run {
             toolbarSettings.setNavigationOnClickListener { onBackPressed() }
             btnMessage.setOnClickListener { searchViewModel.onMessageButtonClicked() }
-            initTracksRecyclerView()
-            initTracksHistoryRecyclerView()
             clearButton.setOnClickListener {
                 searchViewModel.onClearButtonClicked()
             }
         }
+        initTracksRecyclerView()
+        initTracksHistoryRecyclerView()
         initEditTextSearch()
         initClearButton()
     }
@@ -77,9 +77,9 @@ class SearchActivity : AppCompatActivity() {
         searchViewModel.state.observe(this) {
             binding?.apply {
                 clearButton.isVisible = it.clearButtonVisible
-                trackAdapter.updateData(it.tracks)
+                trackAdapter?.updateData(it.tracks)
                 trackRecyclerView.isVisible = it.tracks.isNotEmpty()
-                trackHistoryAdapter.update(it.tracksHistory)
+                trackHistoryAdapter?.update(it.tracksHistory)
                 layoutHistory.isVisible = it.tracksHistoryVisible
                 progressBar.isVisible = it.progressVisible
                 btnMessage.isVisible = it.noWebVisible

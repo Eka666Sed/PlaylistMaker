@@ -21,7 +21,7 @@ class PlayerViewModel(
 ) : AndroidViewModel(application) {
 
     companion object {
-        private const val TIME_STEP = 300L
+        private const val TIME_STEP_MILLIS = 300L
     }
 
     private var mediaPlayer: MediaPlayer = MediaPlayer()
@@ -30,7 +30,7 @@ class PlayerViewModel(
         override fun run() {
             val time = DateFormatter.formatMillisToString(mediaPlayer.currentPosition.toLong())
             if (getCurrentScreenState().playerState == PlayerState.PLAYING) {
-                handler.postDelayed(this, TIME_STEP)
+                handler.postDelayed(this, TIME_STEP_MILLIS)
                 _state.postValue(PlayerScreenState(PlayerState.PLAYING, track, time))
             } else {
                 pausePlayer()

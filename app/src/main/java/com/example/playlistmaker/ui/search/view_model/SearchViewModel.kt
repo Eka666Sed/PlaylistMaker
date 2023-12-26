@@ -1,9 +1,8 @@
 package com.example.playlistmaker.ui.search.view_model
 
-import android.app.Application
+
 import android.os.Handler
 import android.os.Looper
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

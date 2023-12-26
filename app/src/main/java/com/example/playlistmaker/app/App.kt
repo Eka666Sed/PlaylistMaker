@@ -8,13 +8,14 @@ import com.example.playlistmaker.di.repositoryModule
 import com.example.playlistmaker.di.sharedPreferencesModule
 import com.example.playlistmaker.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.GlobalContext
+import org.koin.core.context.GlobalContext.startKoin
+
 
 class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        GlobalContext.startKoin {
+        startKoin {
             androidContext(this@App)
             modules(
                 interactorModule,

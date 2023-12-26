@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 object DateFormatter {
+
     private const val TIME_PATTERN = "mm:ss"
 
     fun formatMillisToString(timeMillis: Long): String =
