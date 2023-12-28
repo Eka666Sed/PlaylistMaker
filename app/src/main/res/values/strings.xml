@@ -12,9 +12,6 @@
     <string name="email_theme">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="email_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="url_mail">mailto:</string>
-    <string name="my_email">mrs_sedova@mail.ru</string>
-    <string name="web_url">https://yandex.ru/legal/practicum_offer/</string>
-    <string name="web_document">https://practicum.yandex.ru/android-developer/</string>
     <string name="no_web">Проблемы со связью\n\nЗагрузка не удалась.
         Проверьте подключение к интернету</string>
     <string name="no_content">Ничего не нашлось</string>
@@ -31,5 +28,10 @@
     <string name="track_name">Название трека</string>
     <string name="start_track_time">00:00</string>
     <string name="playlist_create">Плэйлист создан</string>
+    <string name="favorite_tracks">Избранные треки</string>
+    <string name="playlists">Плейлисты</string>
+    <string name="no_favorite_tracks">Ваша медиатека пуста</string>
+    <string name="no_playlists">Вы не создали \n ни одного плейлиста</string>
+    <string name="new_playlist">Новый плейлист</string>
 
 </resources>

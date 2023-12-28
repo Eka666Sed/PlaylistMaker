@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back"
-        app:titleTextColor="@color/colorTextToolbarSearch" />
+        app:titleTextColor="@color/colorTextToolbar" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineLeft"
