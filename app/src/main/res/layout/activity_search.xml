@@ -13,7 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="@string/search"
-        app:titleTextColor="@color/colorTextToolbarSearch" />
+        app:titleTextColor="@color/colorTextToolbar" />
 
     <FrameLayout
         android:layout_width="match_parent"

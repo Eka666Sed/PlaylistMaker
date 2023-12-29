@@ -6,8 +6,7 @@
     <color name="color_LinearLayoutMain">#3772E7</color>
     <color name="colorInput">#AAAAAA</color>
     <color name="textButtonSetting">#FF000000</color>
-    <color name="colorTextToolbarSetting">#FF000000</color>
-    <color name="colorTextToolbarSearch">#FF000000</color>
+    <color name="colorTextToolbar">#1A1B22</color>
     <color name="colorHint">#AAAAAA</color>
     <color name="colorStartSearch">#E6E8EB</color>
     <color name="colorIconStartSearch">#AEAFB4</color>
