@@ -13,7 +13,7 @@ class MediaActivity : AppCompatActivity() {
 
     private var binding: ActivityMediaBinding? = null
 
-    private lateinit var tabMediator: TabLayoutMediator
+    private var tabMediator: TabLayoutMediator? = null
     private val tabsTitleResIds = arrayOf(
         R.string.favorite_tracks,
         R.string.playlists
@@ -29,7 +29,7 @@ class MediaActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        tabMediator.detach()
+        tabMediator?.detach()
     }
 
     private fun initTabLayout() = binding?.run {
@@ -37,7 +37,7 @@ class MediaActivity : AppCompatActivity() {
         tabMediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = getString(tabsTitleResIds[position])
         }
-        tabMediator.attach()
+        tabMediator?.attach()
     }
 }
 
