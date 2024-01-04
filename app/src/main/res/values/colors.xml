@@ -17,4 +17,5 @@
     <color name="colorSwitch">#AEAFB4</color>
     <color name="colorSwitchBackground">#E6E8EB</color>
     <color name="backgroundColorImage">#FF000000</color>
+    <color name="colorNavTabBackground">#FFFFFFFF</color>
 </resources>
