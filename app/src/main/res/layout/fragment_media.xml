@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorNavTabBackground"
     tools:context=".ui.media.MediaFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -18,6 +19,7 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         app:tabTextColor="@color/colorTextToolbar"
+        app:tabBackground="@color/colorNavTabBackground"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

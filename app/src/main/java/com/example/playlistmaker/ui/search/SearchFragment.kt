@@ -39,6 +39,11 @@ class SearchFragment : Fragment() {
         initObservers()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
     private fun initViews() {
         binding?.run {
             btnMessage.setOnClickListener { searchViewModel.onMessageButtonClicked() }

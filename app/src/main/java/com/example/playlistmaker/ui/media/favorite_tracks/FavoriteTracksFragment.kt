@@ -29,4 +29,9 @@ class FavoriteTracksFragment : Fragment() {
             binding?.layoutNoFavoriteTracks?.isVisible = it.isEmpty()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }

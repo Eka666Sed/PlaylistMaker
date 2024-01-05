@@ -29,6 +29,11 @@ class SettingsFragment : Fragment() {
         setUpThemeSwitch()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
     private fun setUpButtons() {
         binding?.apply {
             buttonShareApp.setOnClickListener { viewModel.onShareAppButtonClicked() }
@@ -42,7 +47,7 @@ class SettingsFragment : Fragment() {
             viewModel.applicationTheme.observe(viewLifecycleOwner) {
                 isChecked = it
             }
-            setOnClickListener {viewModel.onThemeSwitchClicked(this.isChecked) }
+            setOnClickListener { viewModel.onThemeSwitchClicked(this.isChecked) }
         }
     }
 }

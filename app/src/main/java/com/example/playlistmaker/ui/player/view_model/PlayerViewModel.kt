@@ -80,8 +80,10 @@ class PlayerViewModel(
     }
 
     private fun pausePlayer() {
-        mediaPlayer.pause()
-        _state.value = getCurrentScreenState().copy(playerState = PlayerState.PAUSED)
+        if (getCurrentScreenState().playerState == PlayerState.PLAYING) {
+            mediaPlayer.pause()
+            _state.value = getCurrentScreenState().copy(playerState = PlayerState.PAUSED)
+        }
     }
 
     private fun startPlayer() {

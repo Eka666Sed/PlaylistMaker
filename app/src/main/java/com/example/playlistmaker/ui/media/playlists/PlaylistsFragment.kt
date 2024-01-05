@@ -29,4 +29,8 @@ class PlaylistsFragment : Fragment() {
             binding?.layoutNoPlaylists?.isVisible = it.isEmpty()
         }
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }
