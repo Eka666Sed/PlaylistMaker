@@ -5,17 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorNavTabBackground"
     tools:context=".ui.media.playlists.PlaylistsFragment">
 
     <Button
         android:id="@+id/btn_create_playlist"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
+        android:paddingHorizontal="14dp"
         android:background="@drawable/custom_support"
         android:fontFamily="@font/ys_display_medium"
-        android:padding="6dp"
+        android:lineHeight="16dp"
         android:text="@string/new_playlist"
         android:textAllCaps="false"
         android:textSize="14sp" />

@@ -26,5 +26,6 @@ class SettingsViewModel(
     fun onThemeSwitchClicked(isChecked: Boolean) {
         val applicationTheme = if (isChecked) ApplicationTheme.DARK else ApplicationTheme.LIGHT
         settingsInteractor.updateApplicationTheme(applicationTheme)
+        _applicationTheme.value = settingsInteractor.getApplicationTheme()
     }
 }

@@ -5,20 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.media.MediaActivity">
+    android:background="@color/colorNavTabBackground"
+    tools:context=".ui.media.MediaFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_arrow_back"
         app:title="@string/media"
         app:titleTextColor="@color/colorTextToolbar" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         app:tabTextColor="@color/colorTextToolbar"
+        app:tabBackground="@color/colorNavTabBackground"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

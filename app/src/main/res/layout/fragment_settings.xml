@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorNavTabBackground">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarSettings"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="@drawable/ic_arrow_back"
         app:title="@string/settings"
         app:titleTextColor="@color/colorTextToolbar" />
 
@@ -30,8 +30,7 @@
             android:textSize="16sp"
             android:textStyle="normal"
             android:paddingLeft="0dp"
-            android:text="@string/dark_theme"
-            />
+            android:text="@string/dark_theme" />
 
         <Button
             android:id="@+id/buttonShareApp"
