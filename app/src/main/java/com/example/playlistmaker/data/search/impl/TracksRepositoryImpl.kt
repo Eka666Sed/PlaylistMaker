@@ -9,6 +9,8 @@ import com.example.playlistmaker.data.search.TracksRepository
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.utils.Resource
 import com.example.playlistmaker.domain.utils.SharedPreferencesConverter
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -22,26 +24,29 @@ class TracksRepositoryImpl(
 
     private var trackForPlaying: Track? = null
 
-    override fun searchTracks(text: String): Resource<List<Track>> {
-        val response = networkClient.doRequest(TracksSearchRequest(text))
-        return when (response.resultCode){
-            -1 -> Resource.Error("Проверьте подключение к интернету")
-            200 -> {
-                Resource.Success((response as ResponseTrack).results.map {
-                    Track(
-                        it.trackName,
-                        it.artistName,
-                        it.trackTimeMillis,
-                        it.artworkUrl100,
-                        it.primaryGenreName,
-                        it.collectionName,
-                        it.country,
-                        it.releaseDate,
-                        it.previewUrl
-                    )
-                })
+    override fun searchTracks(text: String): Flow<Resource<List<Track>>> {
+        return flow {
+            val response = networkClient.doRequest(TracksSearchRequest(text))
+            when (response.resultCode) {
+                -1 -> emit(Resource.Error("Проверьте подключение к интернету"))
+                200 -> {
+                    emit(Resource.Success((response as ResponseTrack).results.map {
+                        Track(
+                            it.trackName,
+                            it.artistName,
+                            it.trackTimeMillis,
+                            it.artworkUrl100,
+                            it.primaryGenreName,
+                            it.collectionName,
+                            it.country,
+                            it.releaseDate,
+                            it.previewUrl
+                        )
+                    }))
+                }
+
+                else -> emit(Resource.Error("Ошибка сервера"))
             }
-            else -> Resource.Error("Ошибка сервера")
         }
     }
 
