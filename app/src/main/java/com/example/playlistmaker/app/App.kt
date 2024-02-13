@@ -1,6 +1,7 @@
 package com.example.playlistmaker.app
 
 import android.app.Application
+import com.example.playlistmaker.di.databaseModule
 import com.example.playlistmaker.di.interactorModule
 import com.example.playlistmaker.di.navigationModule
 import com.example.playlistmaker.di.networkModule
@@ -23,7 +24,8 @@ class App : Application() {
                 networkModule,
                 repositoryModule,
                 sharedPreferencesModule,
-                viewModelModule
+                viewModelModule,
+                databaseModule
             )
         }
     }

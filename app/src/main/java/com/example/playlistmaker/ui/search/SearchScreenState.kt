@@ -1,6 +1,6 @@
 package com.example.playlistmaker.ui.search
 
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.model.Track
 
 data class SearchScreenState(
     val clearButtonVisible: Boolean = false,

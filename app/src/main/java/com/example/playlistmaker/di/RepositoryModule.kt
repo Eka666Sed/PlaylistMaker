@@ -1,5 +1,7 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.data.favorite_tracks.FavoriteTracksRepository
+import com.example.playlistmaker.data.favorite_tracks.impl.FavoriteTracksRepositoryImpl
 import com.example.playlistmaker.data.search.TracksRepository
 import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.example.playlistmaker.data.settings.SettingsRepository
@@ -16,7 +18,12 @@ val repositoryModule = module {
         TracksRepositoryImpl(
             networkClient = get(),
             sharedPreferences = get(),
-            sharedPreferencesConverter = get()
+            sharedPreferencesConverter = get(),
+            favoriteTrackDao = get()
         )
+    }
+
+    single<FavoriteTracksRepository> {
+        FavoriteTracksRepositoryImpl(favoriteTrackDao = get())
     }
 }

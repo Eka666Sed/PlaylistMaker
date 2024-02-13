@@ -36,6 +36,7 @@
             android:id="@+id/buttonShareApp"
             style="@style/App.Button.Setting"
             android:text="@string/share_app"
+            android:foreground="?attr/selectableItemBackground"
             app:drawableEndCompat="@drawable/ic_share"
             tools:ignore="VisualLintButtonSize" />
 
@@ -43,6 +44,7 @@
             android:id="@+id/buttonWriteSupport"
             style="@style/App.Button.Setting"
             android:text="@string/write_support"
+            android:foreground="?attr/selectableItemBackground"
             app:drawableEndCompat="@drawable/ic_support"
             tools:ignore="VisualLintButtonSize" />
 
@@ -50,6 +52,7 @@
             android:id="@+id/buttonUserAgreement"
             style="@style/App.Button.Setting"
             android:text="@string/user_agreement"
+            android:foreground="?attr/selectableItemBackground"
             app:drawableEndCompat="@drawable/ic_arrow_right"
             tools:ignore="VisualLintButtonSize" />
 

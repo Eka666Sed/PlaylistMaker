@@ -16,7 +16,10 @@ val viewModelModule = module {
     }
 
     viewModel<PlayerViewModel> {
-        PlayerViewModel(playerInteractor = get(), androidApplication())
+        PlayerViewModel(
+            favoriteTracksInteractor = get(),
+            playerInteractor = get(),
+            application = androidApplication())
     }
 
     viewModel<SettingsViewModel> {
@@ -24,7 +27,7 @@ val viewModelModule = module {
     }
 
     viewModel<FavoriteTracksViewModel> {
-        FavoriteTracksViewModel()
+        FavoriteTracksViewModel(favoriteTracksInteractor = get())
     }
 
     viewModel<PlaylistsViewModel> {
