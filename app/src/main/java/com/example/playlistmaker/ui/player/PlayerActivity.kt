@@ -58,8 +58,10 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
 
-            val ibLikeResId = if (it.isFavoriteTrack) R.drawable.ic_like_filled else R.drawable.like
-            binding?.ibLike?.setImageResource(ibLikeResId)
+            if (it.isFavoriteTrack)
+                binding?.ibLike?.setImageResource(R.drawable.ic_like_filled)
+            else
+                binding?.ibLike?.setImageResource(R.drawable.like)
         }
 
         playerViewModel.event.observe(this) {
