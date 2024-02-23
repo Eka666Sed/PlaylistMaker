@@ -2,11 +2,12 @@ package com.example.playlistmaker.data.search.impl
 
 
 import android.content.SharedPreferences
+import com.example.playlistmaker.data.db.FavoriteTrackDao
 import com.example.playlistmaker.data.network.NetworkClient
 import com.example.playlistmaker.data.search.model.ResponseTrack
 import com.example.playlistmaker.data.search.model.TracksSearchRequest
 import com.example.playlistmaker.data.search.TracksRepository
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.utils.Resource
 import com.example.playlistmaker.domain.utils.SharedPreferencesConverter
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +16,8 @@ import kotlinx.coroutines.flow.flow
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
     private val sharedPreferences: SharedPreferences,
-    private val sharedPreferencesConverter: SharedPreferencesConverter
+    private val sharedPreferencesConverter: SharedPreferencesConverter,
+    private val favoriteTrackDao: FavoriteTrackDao
     ) : TracksRepository {
     companion object {
         const val KEY_TRACKS_HISTORY = "key_tracks_history"
@@ -30,19 +32,13 @@ class TracksRepositoryImpl(
             when (response.resultCode) {
                 -1 -> emit(Resource.Error("Проверьте подключение к интернету"))
                 200 -> {
-                    emit(Resource.Success((response as ResponseTrack).results.map {
-                        Track(
-                            it.trackName,
-                            it.artistName,
-                            it.trackTimeMillis,
-                            it.artworkUrl100,
-                            it.primaryGenreName,
-                            it.collectionName,
-                            it.country,
-                            it.releaseDate,
-                            it.previewUrl
+                    val tracks = (response as ResponseTrack).results.map { it.mapToDomain() }
+                    val favoriteTracksIds = favoriteTrackDao.getTracksIds().toSet()
+                    emit(
+                        Resource.Success(
+                            tracks.map { it.copy(isFavorite = it.id in favoriteTracksIds) }
                         )
-                    }))
+                    )
                 }
 
                 else -> emit(Resource.Error("Ошибка сервера"))

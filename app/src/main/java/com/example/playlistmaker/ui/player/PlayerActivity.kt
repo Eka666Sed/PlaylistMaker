@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.player.model.PlayerState
 import com.example.playlistmaker.domain.utils.DateFormatter
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
@@ -57,6 +57,11 @@ class PlayerActivity : AppCompatActivity() {
                     PlayerState.PAUSED -> binding?.ibPlay?.setImageResource(R.drawable.button_play)
                 }
             }
+
+            if (it.isFavoriteTrack)
+                binding?.ibLike?.setImageResource(R.drawable.ic_like_filled)
+            else
+                binding?.ibLike?.setImageResource(R.drawable.like)
         }
 
         playerViewModel.event.observe(this) {

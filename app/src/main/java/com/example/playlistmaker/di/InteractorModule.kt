@@ -1,5 +1,7 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.domain.favorite_tracks.FavoriteTracksInteractor
+import com.example.playlistmaker.domain.favorite_tracks.impl.FavoriteTracksInteractorImpl
 import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.domain.player.impl.PlayerInteractorImpl
 import com.example.playlistmaker.domain.search.SearchInteractor
@@ -26,5 +28,9 @@ val interactorModule = module {
 
     single<SharingInteractor> {
         SharingInteractorImpl(externalNavigator = get())
+    }
+
+    single<FavoriteTracksInteractor> {
+        FavoriteTracksInteractorImpl(favoriteTracksRepository = get(), trackRepository = get())
     }
 }

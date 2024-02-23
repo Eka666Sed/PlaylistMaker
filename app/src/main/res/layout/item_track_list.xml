@@ -67,6 +67,7 @@
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackground"
         tools:ignore="SpeakableTextPresentCheck"/>
 
 </LinearLayout>

@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.search.impl
 
 import com.example.playlistmaker.data.search.TracksRepository
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.search.SearchInteractor
 import com.example.playlistmaker.domain.utils.Resource
 import kotlinx.coroutines.flow.Flow

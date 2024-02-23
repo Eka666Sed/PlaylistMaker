@@ -3,7 +3,7 @@ package com.example.playlistmaker.ui.media.playlists.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.domain.models.Playlist
+import com.example.playlistmaker.domain.model.Playlist
 
 class PlaylistsViewModel : ViewModel() {
 
