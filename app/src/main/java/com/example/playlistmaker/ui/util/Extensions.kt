@@ -9,8 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.R
 
-private const val IMAGE_SIZE = "512x512bb.jpg"
-private const val RADIUS_CORNERS = 2.0f
+private const val RADIUS_CORNERS = 8.0f
 
 fun ImageView.load(imageUrl: String) {
     val requestOptions = RequestOptions()
@@ -19,7 +18,7 @@ fun ImageView.load(imageUrl: String) {
     val density = Resources.getSystem().displayMetrics.density
     Glide.with(context)
         .applyDefaultRequestOptions(requestOptions)
-        .load(imageUrl.replaceAfterLast('/', IMAGE_SIZE))
+        .load(imageUrl)
         .transform(CenterCrop(), RoundedCorners((RADIUS_CORNERS * density).toInt()))
         .into(this)
 }

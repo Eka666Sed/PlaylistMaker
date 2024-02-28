@@ -18,4 +18,7 @@
     <color name="colorSwitchBackground">#E6E8EB</color>
     <color name="backgroundColorImage">#FF000000</color>
     <color name="colorNavTabBackground">#FFFFFFFF</color>
+    <color name="colorTopView">#E6E8EB</color>
+    <color name="colorBottomSheetBackground">#FFFFFF</color>
+    <color name="colorBottomSheetOverlay">#99000000</color>
 </resources>

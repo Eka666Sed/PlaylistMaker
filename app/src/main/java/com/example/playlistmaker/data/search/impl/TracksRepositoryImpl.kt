@@ -2,7 +2,7 @@ package com.example.playlistmaker.data.search.impl
 
 
 import android.content.SharedPreferences
-import com.example.playlistmaker.data.db.FavoriteTrackDao
+import com.example.playlistmaker.data.db.favorite_tracks.FavoriteTrackDao
 import com.example.playlistmaker.data.network.NetworkClient
 import com.example.playlistmaker.data.search.model.ResponseTrack
 import com.example.playlistmaker.data.search.model.TracksSearchRequest

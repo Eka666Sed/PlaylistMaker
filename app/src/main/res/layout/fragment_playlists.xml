@@ -30,7 +30,7 @@
         android:layout_gravity="top|center"
         android:layout_marginTop="48dp"
         android:orientation="vertical"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_no_playlists"
@@ -51,5 +51,14 @@
             android:textColor="@color/colorText"
             android:textSize="19sp" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPlaylists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        tools:listitem="@layout/item_playlist" />
 
 </LinearLayout>

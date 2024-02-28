@@ -1,13 +1,12 @@
-package com.example.playlistmaker.data.db
+package com.example.playlistmaker.data.db.track
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.playlistmaker.domain.model.Track
 
-@Entity(tableName = "favorite_tracks")
-data class  FavoriteTrackEntity
-    (
+@Entity(tableName = "tracks")
+data class TrackEntity(
     @PrimaryKey
     val id: Long,
     @ColumnInfo("track_name")
@@ -27,16 +26,11 @@ data class  FavoriteTrackEntity
     @ColumnInfo("release_date")
     val releaseDate: String,
     @ColumnInfo("preview_url")
-    val previewUrl: String,
-    @ColumnInfo("created_at")
-    val createdAt: Long
-){
+    val previewUrl: String
+) {
     companion object {
 
-        fun mapFromDomain(
-            track: Track,
-            createdAt: Long = 0L
-        ): FavoriteTrackEntity = FavoriteTrackEntity(
+        fun mapFromDomain(track: Track): TrackEntity = TrackEntity(
             id = track.id,
             trackName = track.trackName,
             artistName = track.artistName,
@@ -46,22 +40,7 @@ data class  FavoriteTrackEntity
             collectionName = track.collectionName,
             country = track.country,
             releaseDate = track.releaseDate,
-            previewUrl = track.previewUrl,
-            createdAt = createdAt
+            previewUrl = track.previewUrl
         )
     }
-
-    fun mapToDomain(): Track = Track(
-        id = id,
-        trackName = trackName,
-        artistName = artistName,
-        trackTimeMillis = trackTimeMillis,
-        artworkUrl100 = artworkUrl100,
-        primaryGenreName = primaryGenreName,
-        collectionName = collectionName,
-        country = country,
-        releaseDate = releaseDate,
-        previewUrl = previewUrl,
-        isFavorite = true
-    )
-    }
+}
