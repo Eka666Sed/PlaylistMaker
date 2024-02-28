@@ -26,8 +26,10 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
             android:hint="@string/playlist_name"
+            android:textColorHint="@color/colorText"
             android:imeOptions="actionNext"
-            app:boxStrokeColor="@color/blue">
+            app:boxStrokeColor="@color/text_input_layout_stroke"
+            app:hintTextColor="@color/blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextName"
@@ -45,7 +47,9 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
             android:hint="@string/playlist_description"
-            app:boxStrokeColor="@color/blue">
+            android:textColorHint="@color/colorText"
+            app:boxStrokeColor="@color/text_input_layout_stroke"
+            app:hintTextColor="@color/blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextDescription"
@@ -76,8 +80,10 @@
         android:background="@drawable/bg_create_button"
         android:enabled="false"
         android:text="@string/playlist_button_text"
+        android:shadowColor="#AEAFB4"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

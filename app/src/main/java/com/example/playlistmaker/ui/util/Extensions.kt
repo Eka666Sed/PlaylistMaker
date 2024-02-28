@@ -9,6 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.R
 
+
 private const val RADIUS_CORNERS = 8.0f
 
 fun ImageView.load(imageUrl: String) {

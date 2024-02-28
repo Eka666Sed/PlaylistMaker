@@ -3,7 +3,7 @@
     <item android:state_enabled="false">
         <shape>
             <corners android:radius="8dp" />
-            <solid android:color="@color/colorIconStartSearch" />
+            <solid android:color="#AEAFB4" />
         </shape>
 
     </item>
