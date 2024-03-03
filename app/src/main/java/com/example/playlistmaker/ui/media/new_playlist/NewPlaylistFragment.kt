@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.ui.media.new_playlist.view_model.NewPlaylistViewModel
+import com.example.playlistmaker.ui.media.new_playlist.view_model.NewPlaylistViewModel.Companion.KEY_PLAYLIST_COVER_URI
 import com.example.playlistmaker.ui.util.ResultKeyHolder
 import com.example.playlistmaker.ui.util.load
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -27,10 +28,7 @@ class NewPlaylistFragment : Fragment() {
     private val pickMedia = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) {
-        it?.let { uri ->
-            viewModel.onPlaylistCoverSelected(uri)
-            setSelectedCover(uri)
-        }
+        it?.let { uri -> viewModel.onPlaylistCoverSelected(uri) }
     }
 
     override fun onCreateView(
@@ -43,6 +41,8 @@ class NewPlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val playlistCoverUri = savedInstanceState?.getParcelable<Uri>(KEY_PLAYLIST_COVER_URI)
+        playlistCoverUri?.let { viewModel.onPlaylistCoverSelected(it) }
         binding?.toolbar?.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -50,6 +50,11 @@ class NewPlaylistFragment : Fragment() {
         setupClickListeners()
         setupBackPressHandling()
         initObservers()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(NewPlaylistViewModel.KEY_PLAYLIST_COVER_URI, viewModel.playlistCoverUri.value)
     }
 
     override fun onDestroyView() {
@@ -90,6 +95,11 @@ class NewPlaylistFragment : Fragment() {
         viewModel.isButtonCreateEnabled.observe(viewLifecycleOwner) {
             binding?.btnCreate?.isEnabled = it
         }
+
+        viewModel.playlistCoverUri.observe(viewLifecycleOwner) {
+            it?.let { setSelectedCover(it) }
+        }
+
         viewModel.event.observe(viewLifecycleOwner) {
             when (it) {
                 is NewPlaylistEvent.NavigateBack -> findNavController().popBackStack()
@@ -108,12 +118,8 @@ class NewPlaylistFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.confirmation_dialog_title))
             .setMessage(getString(R.string.confirmation_dialog_message))
-            .setNegativeButton(getString(R.string.confirmation_dialog_negative)) { dialog, which ->
-                dialog.dismiss()
-            }
-            .setPositiveButton(getString(R.string.confirmation_dialog_positive)) { dialog, which ->
-                viewModel.onBackPressedConfirmed()
-            }
+            .setNegativeButton(getString(R.string.confirmation_dialog_negative)) { dialog, which -> dialog.dismiss() }
+            .setPositiveButton(getString(R.string.confirmation_dialog_positive)) { _, _ -> viewModel.onBackPressedConfirmed() }
             .show()
     }
 

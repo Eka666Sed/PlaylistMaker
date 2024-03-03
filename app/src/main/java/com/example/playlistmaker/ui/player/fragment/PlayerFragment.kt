@@ -162,7 +162,7 @@ class PlayerFragment : Fragment() {
             tvDurationValue.text =
                 DateFormatter.formatMillisToString(track.trackTimeMillis).replaceFirst("0", "")
             tvGenreValue.text = track.primaryGenreName
-            ivMain.load(track.artworkUrl100)
+            ivMain.load(track.artworkUrl100, true)
         }
     }
 

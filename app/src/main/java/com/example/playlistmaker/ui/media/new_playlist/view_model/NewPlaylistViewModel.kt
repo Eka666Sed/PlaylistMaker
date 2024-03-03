@@ -18,9 +18,15 @@ class NewPlaylistViewModel(
     private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
+    companion object {
+        const val KEY_PLAYLIST_COVER_URI = "key_playlist_cover_uri"
+    }
+
     private var playlistName = ""
     private var playlistDescription: String? = null
-    private var playlistCoverUri: Uri? = null
+
+    private val _playlistCoverUri: MutableLiveData<Uri?> = MutableLiveData()
+    val playlistCoverUri: LiveData<Uri?> = _playlistCoverUri
 
     private val _isButtonCreateEnabled = MutableLiveData<Boolean>(false)
     val isButtonCreateEnabled: LiveData<Boolean> = _isButtonCreateEnabled
@@ -47,7 +53,11 @@ class NewPlaylistViewModel(
     fun onCreatePlaylistClicked() {
         if (playlistName.isNotEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
-                playlistInteractor.addPlaylist(playlistName, playlistDescription, playlistCoverUri)
+                playlistInteractor.addPlaylist(
+                    playlistName,
+                    playlistDescription,
+                    playlistCoverUri.value
+                )
                 withContext(Dispatchers.Main) {
                     event.value = NewPlaylistEvent.SetPlaylistCreatedResult(playlistName)
                     navigateBack()
@@ -59,13 +69,13 @@ class NewPlaylistViewModel(
     fun onBackPressedConfirmed() = navigateBack()
 
     fun onPlaylistCoverSelected(url: Uri) {
-        playlistCoverUri = url
+        _playlistCoverUri.value = url
     }
 
     private fun checkPlaylistCreationIsNotFinished(): Boolean {
         return playlistName.isNotEmpty() ||
                 !playlistDescription.isNullOrEmpty() ||
-                playlistCoverUri != null
+                playlistCoverUri.value != null
     }
 
     private fun navigateBack() {

@@ -18,7 +18,7 @@ data class FavoriteTrackEntity(
     @ColumnInfo("artwork_url")
     val artworkUrl100: String,
     @ColumnInfo("primary_genre_url")
-    val primaryGenreName: String,
+    val primaryGenreName: String?,
     @ColumnInfo("collection_name")
     val collectionName: String,
     @ColumnInfo("country")
