@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.player.view_model
+package com.example.playlistmaker.ui.player.fragment.view_model
 
 import android.app.Application
 import android.media.MediaPlayer
@@ -8,19 +8,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.favorite_tracks.FavoriteTracksInteractor
+import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.PlayerState
+import com.example.playlistmaker.domain.playlist.PlaylistInteractor
 import com.example.playlistmaker.domain.utils.DateFormatter
-import com.example.playlistmaker.ui.player.PlayerScreenEvent
-import com.example.playlistmaker.ui.player.PlayerScreenState
+import com.example.playlistmaker.ui.player.fragment.PlayerScreenEvent
+import com.example.playlistmaker.ui.player.fragment.PlayerScreenState
 import com.example.playlistmaker.ui.util.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PlayerViewModel(
     private val favoriteTracksInteractor: FavoriteTracksInteractor,
+    private val playlistInteractor: PlaylistInteractor,
     playerInteractor: PlayerInteractor,
     application: Application
 ) : AndroidViewModel(application) {
@@ -37,11 +41,15 @@ class PlayerViewModel(
     private val _state = MutableLiveData<PlayerScreenState>()
     val state: LiveData<PlayerScreenState> = _state
 
+    private val _playlists = MutableLiveData<List<Playlist>>(listOf())
+    val playlists: LiveData<List<Playlist>> = _playlists
+
     val event = SingleLiveEvent<PlayerScreenEvent>()
 
     init {
         _state.value = PlayerScreenState(PlayerState.PAUSED, track)
         subscribeOnFavoriteTracks()
+        subscribeOnPlaylists()
         initPlayer()
     }
 
@@ -57,6 +65,10 @@ class PlayerViewModel(
             trackDurationJob?.cancel()
             mediaPlayer.release()
         }
+    }
+
+    fun onAddButtonClicked() {
+        event.value = PlayerScreenEvent.OpenPlaylistsBottomSheet
     }
 
     fun onPlayButtonClicked() {
@@ -75,6 +87,32 @@ class PlayerViewModel(
                     favoriteTracksInteractor.deleteFromFavorites(this)
                 } else favoriteTracksInteractor.addToFavorites(this)
             }
+        }
+    }
+
+    fun onCreatePlaylistButtonClicked() {
+        event.postValue(PlayerScreenEvent.NavigateToCreatePlaylistScreen)
+    }
+
+    fun onPlaylistClicked(playlist: Playlist) {
+        track?.let {
+            if (it.id !in playlist.tracksIds.toSet()) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    playlistInteractor.updatePlaylist(playlist, it)
+                    withContext(Dispatchers.Main) {
+                        event.value = PlayerScreenEvent.ClosePlaylistsBottomSheet
+                        event.value = PlayerScreenEvent.ShowTrackAddedMessage(playlist.name)
+                    }
+                }
+            } else {
+                event.value = PlayerScreenEvent.ShowTrackAlreadyInPlaylistMessage(playlist.name)
+            }
+        }
+    }
+
+    private fun subscribeOnPlaylists() {
+        viewModelScope.launch(Dispatchers.IO) {
+            playlistInteractor.getPlaylists().collect { _playlists.postValue(it) }
         }
     }
 

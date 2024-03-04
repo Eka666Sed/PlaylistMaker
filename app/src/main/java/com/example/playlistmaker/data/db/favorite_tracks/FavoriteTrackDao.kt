@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.db
+package com.example.playlistmaker.data.db.favorite_tracks
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteTrackDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTrack(track: FavoriteTrackEntity)
 

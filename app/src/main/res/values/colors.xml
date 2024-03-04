@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#3772E7</color>
+    <color name="grey">#AEAFB4</color>
     <color name="color_LinearLayoutMain">#3772E7</color>
     <color name="colorInput">#AAAAAA</color>
     <color name="textButtonSetting">#FF000000</color>
@@ -18,4 +19,7 @@
     <color name="colorSwitchBackground">#E6E8EB</color>
     <color name="backgroundColorImage">#FF000000</color>
     <color name="colorNavTabBackground">#FFFFFFFF</color>
+    <color name="colorTopView">#E6E8EB</color>
+    <color name="colorBottomSheetBackground">#FFFFFF</color>
+    <color name="colorBottomSheetOverlay">#99000000</color>
 </resources>
