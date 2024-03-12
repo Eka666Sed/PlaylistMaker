@@ -9,25 +9,51 @@
         android:id="@+id/mediaFragment"
         android:name="com.example.playlistmaker.ui.media.MediaFragment"
         android:label="fragment_media"
-        tools:layout="@layout/fragment_media" >
+        tools:layout="@layout/fragment_media">
         <action
-            android:id="@+id/action_mediaFragment_to_newPlaylistFragment"
-            app:destination="@id/newPlaylistFragment" />
+            android:id="@+id/action_mediaFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment" />
+        <action
+            android:id="@+id/action_mediaFragment_to_playlistInfoFragment"
+            app:destination="@id/playlistInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.playlistmaker.ui.settings.SettingsFragment"
         android:label="SettingsFragment"
-        tools:layout="@layout/fragment_settings"/>
+        tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/newPlaylistFragment"
-        android:name="com.example.playlistmaker.ui.media.new_playlist.NewPlaylistFragment"
+        android:id="@+id/createPlaylistFragment"
+        android:name="com.example.playlistmaker.ui.media.create_playlist.CreatePlaylistFragment"
         android:label="NewPlaylistFragment"
-        tools:layout="@layout/fragment_new_playlist" />
+        tools:layout="@layout/fragment_create_playlist" />
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.playlistmaker.ui.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/playlistInfoFragment"
+        android:name="com.example.playlistmaker.ui.media.playlist_info.PlaylistInfoFragment"
+        android:label="fragment_playlist_info"
+        tools:layout="@layout/fragment_playlist_info">
+        <argument
+            android:name="playlist_id"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_playlistInfoFragment_to_editPlaylistFragment"
+            app:destination="@id/editPlaylistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPlaylistFragment"
+        android:name="com.example.playlistmaker.ui.media.edit_playlist.EditPlaylistFragment"
+        android:label="EditPlaylistFragment"
+        tools:layout="@layout/fragment_create_playlist">
+        <argument
+            android:name="playlist"
+            app:argType="com.example.playlistmaker.domain.model.Playlist" />
+    </fragment>
 
 </navigation>

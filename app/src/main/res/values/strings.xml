@@ -5,6 +5,12 @@
         <item quantity="many">треков</item>
         <item quantity="other">треков</item>
     </plurals>
+    <plurals name="minute">
+        <item quantity="one">минута</item>
+        <item quantity="few">минуты</item>
+        <item quantity="many">минут</item>
+        <item quantity="other">минут</item>
+    </plurals>
     <string name="app_name">PlaylistMaker</string>
     <string name="main_toolbar_title">Playlist maker</string>
     <string name="search">Поиск</string>
@@ -50,7 +56,19 @@
     <string name="add_to_playlist">Добавить в плейлист</string>
     <string name="added_to_playlist">Добавлено в плейлист %1$s</string>
     <string name="track_already_in_playlist">Трек уже добавлен в плейлист %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="playlist_tracks_info">%1$s · %2$s</string>
+    <string name="no_tracks_in_playlist">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="no_tracks">Ваш плейлист пуст</string>
+    <string name="delete_track_dialog_title">Удалить трек</string>
+    <string name="delete_track_dialog_message">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="delete_track_dialog_positive">Удалить</string>
+    <string name="playlist_menu_share">Поделиться</string>
+    <string name="playlist_menu_edit">Редактировать информацию</string>
+    <string name="playlist_menu_delete">Удалить плейлист</string>
+    <string name="delete_playlist_dialog_title">Удалить плейлист</string>
+    <string name="delete_playlist_dialog_message">Хотите удалить плейлист %1$s?</string>
+    <string name="delete_playlist_dialog_positive">Да</string>
+    <string name="delete_playlist_dialog_negative">Нет</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
 </resources>

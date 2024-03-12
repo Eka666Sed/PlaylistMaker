@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.media.new_playlist.view_model
+package com.example.playlistmaker.ui.media.create_playlist.view_model
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
@@ -7,13 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.main.NavigationInteractor
 import com.example.playlistmaker.domain.playlist.PlaylistInteractor
-import com.example.playlistmaker.ui.media.new_playlist.NewPlaylistEvent
+import com.example.playlistmaker.ui.media.create_playlist.CreatePlaylistEvent
 import com.example.playlistmaker.ui.util.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class NewPlaylistViewModel(
+class CreatePlaylistViewModel(
     private val navigationInteractor: NavigationInteractor,
     private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
@@ -31,11 +31,11 @@ class NewPlaylistViewModel(
     private val _isButtonCreateEnabled = MutableLiveData<Boolean>(false)
     val isButtonCreateEnabled: LiveData<Boolean> = _isButtonCreateEnabled
 
-    val event = SingleLiveEvent<NewPlaylistEvent>()
+    val event = SingleLiveEvent<CreatePlaylistEvent>()
 
     fun onBackPressed() {
         if (checkPlaylistCreationIsNotFinished()) {
-            event.value = NewPlaylistEvent.ShowBackConfirmationDialog
+            event.value = CreatePlaylistEvent.ShowBackConfirmationDialog
         } else {
             navigateBack()
         }
@@ -59,7 +59,7 @@ class NewPlaylistViewModel(
                     playlistCoverUri.value
                 )
                 withContext(Dispatchers.Main) {
-                    event.value = NewPlaylistEvent.SetPlaylistCreatedResult(playlistName)
+                    event.value = CreatePlaylistEvent.SetPlaylistCreatedResult(playlistName)
                     navigateBack()
                 }
             }
@@ -79,7 +79,7 @@ class NewPlaylistViewModel(
     }
 
     private fun navigateBack() {
-        event.value = NewPlaylistEvent.NavigateBack
+        event.value = CreatePlaylistEvent.NavigateBack
         navigationInteractor.setBottomNavigationVisibility(true)
     }
 }

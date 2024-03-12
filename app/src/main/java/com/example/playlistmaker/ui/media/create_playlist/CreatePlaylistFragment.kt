@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.media.new_playlist
+package com.example.playlistmaker.ui.media.create_playlist
 
 import android.net.Uri
 import android.os.Bundle
@@ -13,18 +13,18 @@ import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
-import com.example.playlistmaker.ui.media.new_playlist.view_model.NewPlaylistViewModel
-import com.example.playlistmaker.ui.media.new_playlist.view_model.NewPlaylistViewModel.Companion.KEY_PLAYLIST_COVER_URI
+import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
+import com.example.playlistmaker.ui.media.create_playlist.view_model.CreatePlaylistViewModel
+import com.example.playlistmaker.ui.media.create_playlist.view_model.CreatePlaylistViewModel.Companion.KEY_PLAYLIST_COVER_URI
 import com.example.playlistmaker.ui.util.ResultKeyHolder
 import com.example.playlistmaker.ui.util.load
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewPlaylistFragment : Fragment() {
+open class CreatePlaylistFragment : Fragment() {
 
-    private var binding: FragmentNewPlaylistBinding? = null
-    private val viewModel: NewPlaylistViewModel by viewModel()
+    protected var binding: FragmentCreatePlaylistBinding? = null
+    protected open val viewModel: CreatePlaylistViewModel by viewModel()
     private val pickMedia = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) {
@@ -35,7 +35,7 @@ class NewPlaylistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentNewPlaylistBinding.inflate(layoutInflater)
+        binding = FragmentCreatePlaylistBinding.inflate(layoutInflater)
         return binding?.root
     }
 
@@ -43,23 +43,34 @@ class NewPlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val playlistCoverUri = savedInstanceState?.getParcelable<Uri>(KEY_PLAYLIST_COVER_URI)
         playlistCoverUri?.let { viewModel.onPlaylistCoverSelected(it) }
-        binding?.toolbar?.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
+        initToolbar()
         setupTextListeners()
-        setupClickListeners()
+        initCompleteButton()
+        initCoverButton()
         setupBackPressHandling()
         initObservers()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(NewPlaylistViewModel.KEY_PLAYLIST_COVER_URI, viewModel.playlistCoverUri.value)
+        outState.putParcelable(KEY_PLAYLIST_COVER_URI, viewModel.playlistCoverUri.value)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    protected open fun initToolbar() {
+        binding?.toolbar?.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    protected open fun initCompleteButton() {
+        binding?.apply {
+            btnComplete.setOnClickListener { viewModel.onCompleteButtonClicked() }
+        }
     }
 
     private fun setupTextListeners() {
@@ -71,12 +82,11 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    private fun setupClickListeners() {
+    private fun initCoverButton() {
         binding?.apply {
             ibCover.setOnClickListener {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
-            btnCreate.setOnClickListener { viewModel.onCreatePlaylistClicked() }
         }
     }
 
@@ -93,7 +103,7 @@ class NewPlaylistFragment : Fragment() {
 
     private fun initObservers() {
         viewModel.isButtonCreateEnabled.observe(viewLifecycleOwner) {
-            binding?.btnCreate?.isEnabled = it
+            binding?.btnComplete?.isEnabled = it
         }
 
         viewModel.playlistCoverUri.observe(viewLifecycleOwner) {
@@ -102,9 +112,9 @@ class NewPlaylistFragment : Fragment() {
 
         viewModel.event.observe(viewLifecycleOwner) {
             when (it) {
-                is NewPlaylistEvent.NavigateBack -> findNavController().popBackStack()
-                is NewPlaylistEvent.ShowBackConfirmationDialog -> showBackConfirmationDialog()
-                is NewPlaylistEvent.SetPlaylistCreatedResult -> {
+                is CreatePlaylistEvent.NavigateBack -> findNavController().popBackStack()
+                is CreatePlaylistEvent.ShowBackConfirmationDialog -> showBackConfirmationDialog()
+                is CreatePlaylistEvent.SetPlaylistCreatedResult -> {
                     requireActivity().supportFragmentManager.setFragmentResult(
                         ResultKeyHolder.KEY_PLAYLIST_CREATED,
                         bundleOf(ResultKeyHolder.KEY_PLAYLIST_NAME to it.playlistName)
@@ -118,7 +128,7 @@ class NewPlaylistFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.confirmation_dialog_title))
             .setMessage(getString(R.string.confirmation_dialog_message))
-            .setNegativeButton(getString(R.string.confirmation_dialog_negative)) { dialog, which -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.confirmation_dialog_negative)) { dialog, _ -> dialog.dismiss() }
             .setPositiveButton(getString(R.string.confirmation_dialog_positive)) { _, _ -> viewModel.onBackPressedConfirmed() }
             .show()
     }

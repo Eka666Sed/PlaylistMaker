@@ -22,4 +22,6 @@
     <color name="colorTopView">#E6E8EB</color>
     <color name="colorBottomSheetBackground">#FFFFFF</color>
     <color name="colorBottomSheetOverlay">#99000000</color>
+    <color name="colorPlaylistBackground">#E6E8EB</color>
+    <color name="colorCommonText">#1A1B22</color>
 </resources>
