@@ -1,3 +1,5 @@
+package com.example.playlistmaker.ui.media.edit_playlist.view_model
+
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

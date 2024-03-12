@@ -10,8 +10,9 @@ import com.example.playlistmaker.databinding.ItemPlaylistBinding
 import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.ui.util.load
 
-class PlaylistAdapter :
-    ListAdapter<Playlist, PlaylistAdapter.PlaylistViewHolder>(PlaylistDiffCallback()) {
+class PlaylistAdapter(
+    private val onPlaylistClicked: (playlistId: String) -> Unit
+) : ListAdapter<Playlist, PlaylistAdapter.PlaylistViewHolder>(PlaylistDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -22,12 +23,13 @@ class PlaylistAdapter :
         holder.bind(getItem(position))
     }
 
-    class PlaylistViewHolder(
+   inner class PlaylistViewHolder(
         private val binding: ItemPlaylistBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(playlist: Playlist) {
             with(binding) {
+                root.setOnClickListener { onPlaylistClicked(playlist.id) }
                 playlist.coverUri?.let { ivCover.load(it) }
                 textName.text = playlist.name
                 textTracksCount.text = getTracksCountText(playlist.tracksCount)
