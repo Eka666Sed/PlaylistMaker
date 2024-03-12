@@ -3,6 +3,8 @@ package com.example.playlistmaker.di
 import com.example.playlistmaker.ui.main.view_model.MainViewModel
 import com.example.playlistmaker.ui.media.favorite_tracks.view_model.FavoriteTracksViewModel
 import com.example.playlistmaker.ui.media.create_playlist.view_model.CreatePlaylistViewModel
+import com.example.playlistmaker.ui.media.edit_playlist.view_model.EditPlaylistViewModel
+import com.example.playlistmaker.ui.media.playlist_info.view_model.PlaylistInfoViewModel
 import com.example.playlistmaker.ui.media.playlists.view_model.PlaylistsViewModel
 import com.example.playlistmaker.ui.player.fragment.view_model.PlayerViewModel
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
@@ -35,9 +37,7 @@ val viewModelModule = module {
 
     viewModel<PlaylistsViewModel> {
         PlaylistsViewModel(
-            navigationInteractor = get(),
-            playlistInteractor = get()
-        )
+            navigationInteractor = get(), playlistInteractor = get())
     }
     viewModel<CreatePlaylistViewModel> {
         CreatePlaylistViewModel(navigationInteractor = get(), playlistInteractor = get())
@@ -45,5 +45,22 @@ val viewModelModule = module {
 
     viewModel<MainViewModel> {
         MainViewModel(navigationInteractor = get())
+    }
+
+    viewModel<PlaylistInfoViewModel> {
+        PlaylistInfoViewModel(
+            playlistInteractor = get(),
+            savedStateHandle = get(),
+            sharingInteractor = get(),
+            navigationInteractor = get()
+        )
+    }
+
+    viewModel<EditPlaylistViewModel> {
+        EditPlaylistViewModel(
+            navigationInteractor = get(),
+            playlistInteractor = get(),
+            savedStateHandle = get()
+        )
     }
 }

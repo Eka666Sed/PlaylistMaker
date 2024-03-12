@@ -3,6 +3,7 @@ package com.example.playlistmaker.data.search.impl
 
 import android.content.SharedPreferences
 import com.example.playlistmaker.data.db.favorite_tracks.FavoriteTrackDao
+import com.example.playlistmaker.data.db.track.TrackDao
 import com.example.playlistmaker.data.network.NetworkClient
 import com.example.playlistmaker.data.search.model.ResponseTrack
 import com.example.playlistmaker.data.search.model.TracksSearchRequest
@@ -17,8 +18,10 @@ class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
     private val sharedPreferences: SharedPreferences,
     private val sharedPreferencesConverter: SharedPreferencesConverter,
-    private val favoriteTrackDao: FavoriteTrackDao
+    private val favoriteTrackDao: FavoriteTrackDao,
+    private val trackDao: TrackDao
     ) : TracksRepository {
+
     companion object {
         const val KEY_TRACKS_HISTORY = "key_tracks_history"
         const val MAX_TRACKS_HISTORY_SIZE = 10
@@ -87,4 +90,6 @@ class TracksRepositoryImpl(
     override fun saveTrackForPlaying(track: Track?) {
         trackForPlaying = track
     }
+
+    override suspend fun deleteTrack(trackId: Long) = trackDao.deleteTrack(trackId)
 }

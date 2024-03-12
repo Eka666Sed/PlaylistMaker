@@ -8,10 +8,15 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.model.Track
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 private const val RADIUS_CORNERS = 8.0f
 private const val IMAGE_SIZE = "512x512bb.jpg"
+
+private const val MINUTES_PATTERN = "mm"
 
 fun ImageView.load(imageUrl: String, increaseQuality: Boolean = false) {
     val requestOptions = RequestOptions()
@@ -24,4 +29,10 @@ fun ImageView.load(imageUrl: String, increaseQuality: Boolean = false) {
         .load(newImageUrl)
         .transform(CenterCrop(), RoundedCorners((RADIUS_CORNERS * density).toInt()))
         .into(this)
+}
+
+fun List<Track>.calculateTotalDuration(): Int {
+    val totalDurationInMillis = this.sumOf { it.trackTimeMillis }
+    return SimpleDateFormat(MINUTES_PATTERN, Locale.getDefault()).format(totalDurationInMillis)
+        .toInt()
 }

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import com.example.playlistmaker.R
 import com.example.playlistmaker.ui.media.create_playlist.CreatePlaylistFragment
+import com.example.playlistmaker.ui.media.edit_playlist.view_model.EditPlaylistViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditPlaylistFragment : CreatePlaylistFragment() {
 

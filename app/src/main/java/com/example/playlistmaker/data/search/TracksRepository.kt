@@ -11,4 +11,5 @@ interface TracksRepository {
     fun clearTrackHistory()
     fun getTrackForPlaying(): Track?
     fun saveTrackForPlaying(track: Track?)
+    suspend fun deleteTrack(trackId: Long)
 }

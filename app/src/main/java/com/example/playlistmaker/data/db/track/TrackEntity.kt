@@ -26,7 +26,9 @@ data class TrackEntity(
     @ColumnInfo("release_date")
     val releaseDate: String,
     @ColumnInfo("preview_url")
-    val previewUrl: String
+    val previewUrl: String,
+    @ColumnInfo("created_at")
+    val createdAt: Long
 ) {
     companion object {
 
@@ -40,7 +42,20 @@ data class TrackEntity(
             collectionName = track.collectionName,
             country = track.country,
             releaseDate = track.releaseDate,
-            previewUrl = track.previewUrl
+            previewUrl = track.previewUrl,
+            createdAt = System.currentTimeMillis()
         )
     }
+    fun mapToDomain(): Track = Track(
+        id = id,
+        trackName = trackName,
+        artistName = artistName,
+        trackTimeMillis = trackTimeMillis,
+        artworkUrl100 = artworkUrl100,
+        primaryGenreName = primaryGenreName,
+        collectionName = collectionName,
+        country = country,
+        releaseDate = releaseDate,
+        previewUrl = previewUrl
+    )
 }
