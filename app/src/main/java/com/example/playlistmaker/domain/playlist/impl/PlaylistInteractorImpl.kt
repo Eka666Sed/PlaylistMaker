@@ -41,7 +41,7 @@ class PlaylistInteractorImpl(
         return playlistRepository.getPlaylistById(playlistId).filterNotNull()
     }
 
-    override suspend fun getPlaylistTracks(tracksIds: List<Long>): List<Track> {
+    override fun getPlaylistTracks(tracksIds: List<Long>): Flow<List<Track>> {
         return playlistRepository.getPlaylistTracks(tracksIds)
     }
 
@@ -65,9 +65,10 @@ class PlaylistInteractorImpl(
     }
 
     override suspend fun updatePlaylist(playlist: Playlist, coverUri: Uri?) {
-        val playlistCoverUri = coverUri?.let {
-            externalStorageRepository.savePlaylistCover(playlist.id, coverUri)
-        }
+        val playlistCoverUri = if (playlist.coverUri != coverUri.toString())
+            coverUri?.let { externalStorageRepository.savePlaylistCover(playlist.id, coverUri)}
+        else
+            playlist.coverUri
         playlistRepository.updatePlaylist(playlist.copy(coverUri = playlistCoverUri))
     }
 

@@ -39,10 +39,12 @@ class PlaylistRepositoryImpl(
         return playlistDao.getPlaylistById(playlistId).map { it?.mapToDomain() }
     }
 
-    override suspend fun getPlaylistTracks(tracksIds: List<Long>): List<Track> {
-        return trackDao.getPlaylistTracks(tracksIds)
-            .sortedByDescending { it.createdAt }
-            .map { it.mapToDomain() }
+    override fun getPlaylistTracks(tracksIds: List<Long>): Flow<List<Track>> {
+        return trackDao.getPlaylistTracks(tracksIds).map { entities ->
+            entities
+                .sortedByDescending { it.createdAt }
+                .map { it.mapToDomain() }
+        }
     }
 
     override suspend fun updatePlaylist(playlist: Playlist) {

@@ -125,10 +125,10 @@ class PlaylistInfoViewModel(
         }
     }
 
-    private suspend fun getPlaylistTracks(tracksIds: List<Long>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            tracks.update { playlistInteractor.getPlaylistTracks(tracksIds) }
-        }
+    private fun getPlaylistTracks(tracksIds: List<Long>) {
+        playlistInteractor.getPlaylistTracks(tracksIds).onEach { newTracks ->
+            tracks.update { newTracks }
+        }.launchIn(viewModelScope)
     }
 
     private fun subscribeOnScreenState() {

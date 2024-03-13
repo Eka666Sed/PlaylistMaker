@@ -12,7 +12,6 @@ import com.example.playlistmaker.ui.media.create_playlist.CreatePlaylistEvent
 import com.example.playlistmaker.ui.media.create_playlist.view_model.CreatePlaylistViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class EditPlaylistViewModel(
     private val navigationInteractor: NavigationInteractor,
@@ -39,12 +38,10 @@ class EditPlaylistViewModel(
             val updatedPlaylist = it.copy(name = playlistName, description = playlistDescription)
             viewModelScope.launch(Dispatchers.IO) {
                 playlistInteractor.updatePlaylist(updatedPlaylist, playlistCoverUri.value)
-                withContext(Dispatchers.Main) {
-                    navigateBack()
+                event.postValue(CreatePlaylistEvent.NavigateBack)
                 }
             }
         }
-    }
 
     override fun onBackPressed() = event.postValue(CreatePlaylistEvent.NavigateBack)
 
