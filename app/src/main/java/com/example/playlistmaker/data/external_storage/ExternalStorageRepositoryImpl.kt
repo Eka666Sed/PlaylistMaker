@@ -23,7 +23,8 @@ class ExternalStorageRepositoryImpl(private val context: Context) : ExternalStor
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
-        val file = File(filePath, "$FILE_NAME$playlistId$FILE_EXTENSION")
+        val file =
+            File(filePath, "$FILE_NAME${playlistId}_${System.currentTimeMillis()}$FILE_EXTENSION")
         val inputStream = context.contentResolver.openInputStream(uri)
         val outputStream = FileOutputStream(file)
         BitmapFactory

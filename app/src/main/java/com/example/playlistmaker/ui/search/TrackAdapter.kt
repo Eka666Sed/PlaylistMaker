@@ -9,7 +9,8 @@ import com.example.playlistmaker.ui.search.view_holder.TrackViewHolder
 
 
 class TrackAdapter(
-    private val onTrackClicked: (track: Track) -> Unit
+    private val onTrackClicked: (track: Track) -> Unit,
+    private val onTrackLongClicked: ((trackId: Long) -> Unit)? = null
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
     private var tracks = emptyList<Track>()
@@ -25,7 +26,13 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val item = tracks[position]
         holder.bind(item)
-        holder.itemView.setOnClickListener { onTrackClicked(item) }
+        holder.itemView.apply {
+            setOnClickListener { onTrackClicked(item) }
+            setOnLongClickListener {
+                onTrackLongClicked?.let { onLongClick -> onLongClick(item.id) }
+                true
+            }
+        }
     }
 
     fun updateData(newListTrack: List<Track>) {

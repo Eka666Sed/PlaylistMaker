@@ -2,4 +2,5 @@
 <resources>
 
     <dimen name="margin_top_toolbar">24dp</dimen>
+    <dimen name="corner_radius">8dp</dimen>
 </resources>

@@ -31,6 +31,11 @@ class PlaylistsViewModel(
         event.value = PlaylistsScreenEvent.NavigateToNewPlaylist
     }
 
+    fun onPlaylistClicked(playlistId: String) {
+        navigationInteractor.setBottomNavigationVisibility(false)
+        event.postValue(PlaylistsScreenEvent.NavigateToPlaylistInfo(playlistId))
+    }
+
     private fun subscribeOnPlaylists() {
         viewModelScope.launch(Dispatchers.IO) {
             playlistInteractor.getPlaylists().collect { _playlists.postValue(it) }
