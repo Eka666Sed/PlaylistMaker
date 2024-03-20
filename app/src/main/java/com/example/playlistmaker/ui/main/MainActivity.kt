@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         binding?.bottomNavigationView?.setupWithNavController(navController)
         viewModel.isBottomNavigationVisible.observe(this) {
             binding?.bottomNavigationView?.isVisible = it
+//            viewModel.isBottomNavigationVisible.observe(this) {
+//                binding?.bottomNavigationView?.isVisible = it
         }
     }
 }

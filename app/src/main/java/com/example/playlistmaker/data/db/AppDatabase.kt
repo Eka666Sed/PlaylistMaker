@@ -14,7 +14,7 @@ import com.example.playlistmaker.data.db.util.ListConverter
 
 @Database(
     entities = [FavoriteTrackEntity::class, PlaylistEntity::class, TrackEntity::class],
-    version = 11
+    version = 12
 )
 @TypeConverters(ListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
