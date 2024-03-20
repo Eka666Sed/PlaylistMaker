@@ -71,18 +71,15 @@ class SearchFragment : Fragment() {
     private fun initEditTextSearch() {
         binding?.editTextSearch?.apply {
             doOnTextChanged { text, _, _, _ ->
-               // Log.d("SearchFragment", "Search text changed: $text")
                 searchViewModel.onSearchRequestChanged(text?.toString()?.trim() ?: "")
             }
             setOnEditorActionListener { _, actionId, _ ->
-               // Log.d("SearchFragment", "Editor action ID: $actionId")
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     searchViewModel.onEnterClicked()
                 }
                 return@setOnEditorActionListener false
             }
             setOnFocusChangeListener { _, hasFocus ->
-               // Log.d("SearchFragment", "Search focus changed: $hasFocus")
                 searchViewModel.onSearchFocusChanged(hasFocus) }
         }
     }
@@ -95,7 +92,6 @@ class SearchFragment : Fragment() {
 
     private fun initObservers() {
         searchViewModel.state.observe(viewLifecycleOwner) {
-           // Log.d("SearchFragment", "Observer state update: $searchViewModel.state")
             binding?.apply {
                 clearButton.isVisible = it.clearButtonVisible
                 trackAdapter?.updateData(it.tracks)
@@ -118,10 +114,8 @@ class SearchFragment : Fragment() {
         }
 
         searchViewModel.event.observe(viewLifecycleOwner) {
-            //Log.d("SearchFragment", "Event received: $searchViewModel.event")
             when (it) {
                 is SearchScreenEvent.OpenPlayerScreen -> {
-                   // Log.d("SearchFragment", "Start act: $searchViewModel.event")
                     startActivity(Intent(requireContext(), PlayerActivity()::class.java))
                 }
                 is SearchScreenEvent.ClearSearch->binding?.editTextSearch?.text?.clear()
